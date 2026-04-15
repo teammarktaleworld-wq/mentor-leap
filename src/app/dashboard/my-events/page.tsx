@@ -1,0 +1,322 @@
+"use client";
+import React, { useState, useEffect } from "react";
+import { Card } from "@/components/ui/Card";
+import { Loader } from "@/components/ui/Loader";
+import { Calendar, Clock, MapPin, Users, AlertTriangle, ExternalLink } from "lucide-react";
+import Link from "next/link";
+
+export default function MyEventsPage() {
+    const [loading, setLoading] = useState(true);
+    const [events, setEvents] = useState<any[]>([]);
+    const [error, setError] = useState<string | null>(null);
+    const [filter, setFilter] = useState<"all" | "upcoming" | "past">("all");
+
+    useEffect(() => {
+        fetchMyEvents();
+    }, []);
+
+    const fetchMyEvents = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const { auth } = await import("@/lib/firebase");
+            const token = await auth.currentUser?.getIdToken();
+            const uid = auth.currentUser?.uid;
+
+            if (!token || !uid) {
+                setError("You must be logged in to view your events");
+                return;
+            }
+
+            const { db } = await import("@/lib/firebase");
+            const { doc, getDoc, collection, getDocs, query, where } = await import("firebase/firestore");
+
+            // 1. Get user's registered event IDs
+            const userDoc = await getDoc(doc(db, "users", uid));
+            if (!userDoc.exists()) {
+                setEvents([]);
+                return;
+            }
+
+            const userData = userDoc.data();
+            const registeredEventIds: string[] = userData.registeredEvents || [];
+
+            if (registeredEventIds.length === 0) {
+                setEvents([]);
+                return;
+            }
+
+            // 2. Fetch event details in batches of 10
+            const batchSize = 10;
+            const allEvents: any[] = [];
+
+            for (let i = 0; i < registeredEventIds.length; i += batchSize) {
+                const batch = registeredEventIds.slice(i, i + batchSize);
+                
+                // Filter out hardcoded fallback events before querying Firestore
+                const firestoreBatch = batch.filter(id => 
+                    id !== "interview-to-offer-letter" && 
+                    id !== "speak-with-impact-bootcamp"
+                );
+
+                if (firestoreBatch.length > 0) {
+                    const eventsSnap = await getDocs(
+                        query(collection(db, "events"), where("__name__", "in", firestoreBatch))
+                    );
+                    eventsSnap.forEach((docSnap) => {
+                        const data = docSnap.data();
+                    // Normalize date
+                    const rawDate = data.date;
+                    let eventDate: Date | null = null;
+                    try {
+                        if (rawDate?._seconds) {
+                            eventDate = new Date(rawDate._seconds * 1000);
+                        } else if (rawDate?.toDate) {
+                            eventDate = rawDate.toDate();
+                        } else if (rawDate instanceof Date || typeof rawDate === 'string' || !isNaN(Date.parse(rawDate as any))) {
+                            eventDate = new Date(rawDate as any);
+                        } else if (rawDate && typeof rawDate === 'object' && 'seconds' in rawDate) {
+                            eventDate = new Date((rawDate as any).seconds * 1000);
+                        }
+                    } catch (e) {
+                        console.error("[MyEvents Page] Date parsing error:", e);
+                    }
+
+                    allEvents.push({
+                        id: docSnap.id,
+                        ...data,
+                        eventDate: eventDate && !isNaN(eventDate.getTime()) ? eventDate : null,
+                    });
+                    });
+                }
+            }
+
+            // --- Inject Hardcoded Launch Events if Registered ---
+            if (registeredEventIds.includes("speak-with-impact-bootcamp")) {
+                allEvents.push({
+                    id: "speak-with-impact-bootcamp",
+                    title: "Speak With Impact: Public Speaking Bootcamp",
+                    description: "Transform how you communicate in high-stakes situations. A practice-driven 2-day live training designed for executive presence and instant impact.",
+                    banner: "https://images.unsplash.com/photo-1475721027187-402ad2989a3b?w=1000&q=80",
+                    eventDate: new Date("2026-03-28T19:00:00+05:30"),
+                    displayDate: "Saturday, 28th March & Sunday, 29th March",
+                    zoomLink: "https://us05web.zoom.us/j/85625593374?pwd=VqabWHfa5B5Uf4lkBXCsjtPLOLPw6C.1",
+                    speaker: "Mridu Bhandari",
+                    type: "Bootcamp"
+                });
+            }
+
+            if (registeredEventIds.includes("interview-to-offer-letter")) {
+                allEvents.push({
+                    id: "interview-to-offer-letter",
+                    title: "Interview to Offer Letter: The Ultimate Communication Masterclass",
+                    description: "Learn how to answer the most commonly asked interview questions with clarity, structure, and confidence. Discover how to present yourself powerfully and turn interviews into offer letters.",
+                    banner: "/events/interview-to-offer-banner.png",
+                    eventDate: new Date("2026-04-30T19:30:00+05:30"),
+                    displayDate: "Thursday, 30th April 2026 • 7:30 - 9:00 PM IST",
+                    zoomLink: "https://us05web.zoom.us/j/123456789?pwd=example",
+                    speaker: "Mridu Bhandari",
+                    type: "Masterclass"
+                });
+            }
+
+            // Sort by date ascending
+            allEvents.sort((a, b) => {
+                const dateA = a.eventDate?.getTime() || 0;
+                const dateB = b.eventDate?.getTime() || 0;
+                return dateA - dateB;
+            });
+
+            setEvents(allEvents);
+        } catch (e: any) {
+            console.error(e);
+            setError(e.message || "Failed to load your events");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const now = new Date();
+    const filteredEvents = events.filter((ev) => {
+        if (filter === "upcoming") return ev.eventDate && ev.eventDate >= now;
+        if (filter === "past") return !ev.eventDate || ev.eventDate < now;
+        return true;
+    });
+
+    if (loading) return <div className="p-20 flex justify-center"><Loader /></div>;
+
+    return (
+        <div className="max-w-6xl mx-auto pb-20 px-4 py-8 md:p-10">
+            <div className="flex items-center justify-between mb-8">
+                <div>
+                    <h1 className="text-2xl md:text-3xl font-black tracking-tight text-white">My Events</h1>
+                    <p className="text-[#94a3b8] text-sm mt-1">
+                        {events.length > 0
+                            ? `${events.length} event${events.length !== 1 ? "s" : ""} registered`
+                            : "No events registered yet"}
+                    </p>
+                </div>
+                {events.length > 0 && (
+                    <div className="flex gap-1 bg-white/5 p-1 rounded-xl border border-white/10 overflow-x-auto no-scrollbar max-w-[50%] xs:max-w-none">
+                        {(["all", "upcoming", "past"] as const).map((f) => (
+                            <button
+                                key={f}
+                                onClick={() => setFilter(f)}
+                                className={`px-3 md:px-4 py-2 rounded-lg text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap ${filter === f
+                                    ? "bg-[#00e5ff] text-black"
+                                    : "text-[#94a3b8] hover:text-white"
+                                    }`}
+                            >
+                                {f}
+                            </button>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            {error && (
+                <div className="flex items-center gap-4 p-6 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 mb-8">
+                    <AlertTriangle size={24} />
+                    <div>
+                        <div className="font-bold">Failed to load events</div>
+                        <div className="text-sm opacity-70 mt-1">{error}</div>
+                    </div>
+                    <button
+                        onClick={fetchMyEvents}
+                        className="ml-auto px-4 py-2 bg-red-500/20 hover:bg-red-500/30 rounded-xl text-sm font-bold transition-colors"
+                    >
+                        Retry
+                    </button>
+                </div>
+            )}
+
+            {filteredEvents.length === 0 ? (
+                <Card className="!p-10 bg-white/[0.03] border-white/10 text-center">
+                    <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-4 text-[#475569]">
+                        <Calendar size={32} />
+                    </div>
+                    <h3 className="text-lg font-bold mb-2 text-white">
+                        {filter === "all" ? "No Events Registered" : `No ${filter} events`}
+                    </h3>
+                    <p className="text-[#94a3b8] text-sm mb-6">
+                        {filter === "all"
+                            ? "You haven't registered for any events yet. Check out upcoming webinars and masterclasses."
+                            : `You have no ${filter} events to show.`}
+                    </p>
+                    <Link href="/events" passHref>
+                        <button className="px-6 py-2 bg-[#00e5ff] text-black font-bold uppercase tracking-widest text-xs rounded-xl hover:bg-white hover:text-black transition-colors">
+                            Browse Events
+                        </button>
+                    </Link>
+                </Card>
+            ) : (
+                <div className="grid md:grid-cols-2 gap-6">
+                    {filteredEvents.map((event) => {
+                        // Fail-safe for critical launch events
+                        const isUpcoming = (event.id === "speak-with-impact-bootcamp" || event.id === "interview-to-offer-letter")
+                            ? true
+                            : !!(event.eventDate && event.eventDate >= now);
+                        
+                        return (
+                            <Card
+                                key={event.id}
+                                className={`!p-0 overflow-hidden bg-white/[0.03] border-white/10 hover:border-[#00e5ff]/30 transition-all group ${!isUpcoming ? "opacity-70" : ""
+                                    }`}
+                            >
+                                {/* Banner */}
+                                <div className="w-full h-40 bg-white/5 overflow-hidden relative">
+                                    {event.banner ? (
+                                        <img
+                                            src={event.banner}
+                                            alt={event.title}
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center text-4xl bg-gradient-to-br from-[#00e5ff]/10 to-[#6366f1]/10">
+                                            🎙
+                                        </div>
+                                    )}
+                                    <div className="absolute top-3 left-3">
+                                        <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-lg ${isUpcoming
+                                            ? "bg-[#00e5ff]/90 text-black"
+                                            : "bg-black/60 text-[#94a3b8]"
+                                            }`}>
+                                            {isUpcoming ? "Upcoming" : "Past"}
+                                        </span>
+                                    </div>
+                                    <div className="absolute top-3 right-3">
+                                        <span className="text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-lg bg-white/10 text-[#00e5ff] border border-[#00e5ff]/20">
+                                            {event.type || "event"}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="p-5">
+                                    <h3 className="font-bold text-white mb-3 leading-snug">{event.title}</h3>
+                                    <p className="text-sm text-[#94a3b8] mb-4 line-clamp-2">{event.description}</p>
+
+                                    <div className="space-y-2 mb-5">
+                                        {event.id === "speak-with-impact-bootcamp" ? (
+                                            <div className="flex items-center gap-2 text-xs text-[#cbd5f5]">
+                                                <Calendar size={12} className="text-[#00e5ff]" />
+                                                Saturday, 28th March & Sunday, 29th March
+                                            </div>
+                                        ) : event.id === "interview-to-offer-letter" ? (
+                                            <div className="flex items-center gap-2 text-xs text-[#cbd5f5]">
+                                                <Calendar size={12} className="text-[#00e5ff]" />
+                                                Thursday, 30th April 2026 • 7:30 - 9:00 PM IST
+                                            </div>
+                                        ) : event.displayDate ? (
+                                            <div className="flex items-center gap-2 text-xs text-[#cbd5f5]">
+                                                <Calendar size={12} className="text-[#00e5ff]" />
+                                                {event.displayDate}
+                                            </div>
+                                        ) : event.eventDate ? (
+                                            <div className="flex items-center gap-2 text-xs text-[#cbd5f5]">
+                                                <Calendar size={12} className="text-[#00e5ff]" />
+                                                {event.eventDate.toLocaleDateString("en-IN", {
+                                                    weekday: "short",
+                                                    year: "numeric",
+                                                    month: "short",
+                                                    day: "numeric",
+                                                })}
+                                            </div>
+                                        ) : null}
+                                        {event.speaker && (
+                                            <div className="flex items-center gap-2 text-xs text-[#cbd5f5]">
+                                                <Users size={12} className="text-[#6366f1]" />
+                                                with {event.speaker}
+                                            </div>
+                                        )}
+                                        {event.seats && (
+                                            <div className="flex items-center gap-2 text-xs text-[#cbd5f5]">
+                                                <Clock size={12} className="text-amber-400" />
+                                                {event.seats} seats
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {isUpcoming && event.zoomLink ? (
+                                        <div className="space-y-3">
+                                            <a
+                                                href={event.zoomLink}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="block"
+                                            >
+                                                <button className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#00e5ff] text-black text-sm font-bold transition-all hover:bg-white hover:scale-[1.02] shadow-[0_0_20px_rgba(0,229,255,0.2)]">
+                                                    <ExternalLink size={14} />
+                                                    Join Event
+                                                </button>
+                                            </a>
+                                        </div>
+                                    ) : null}
+                                </div>
+                            </Card>
+                        );
+                    })}
+                </div>
+            )}
+        </div>
+    );
+}

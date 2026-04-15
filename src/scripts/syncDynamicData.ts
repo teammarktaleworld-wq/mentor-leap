@@ -1,0 +1,123 @@
+import { config } from "dotenv";
+config({ path: ".env.local" });
+import { db, admin } from "../lib/firebaseAdmin";
+
+async function syncDynamicData() {
+  console.log("--- Starting Dynamic Data Sync ---");
+
+  // 1. COURSES
+  console.log("Syncing Courses...");
+  // Clear old courses
+  const coursesSnapshot = await db.collection("courses").get();
+  for (const doc of coursesSnapshot.docs) {
+    // Ensure SWI bootcamp is NOT in the courses collection
+    if (doc.id === "speak-with-impact-bootcamp") {
+      await doc.ref.delete();
+      continue;
+    }
+  }
+
+
+  // 2. EVENTS (Specific Cleanup & Seeding)
+  console.log("Syncing Events...");
+  const eventSnapshot = await db.collection("events").get();
+  for (const doc of eventSnapshot.docs) {
+    if (!["speak-with-impact-bootcamp", "interview-to-offer-letter"].includes(doc.id)) {
+      await doc.ref.delete();
+    }
+  }
+
+  const bootcampId = "speak-with-impact-bootcamp";
+  await db.collection("events").doc(bootcampId).set({
+    title: "Speak with Impact Bootcamp",
+    description: "Transform the way you speak. Influence the way you lead. A two-day immersive learning experience designed to help professionals develop confident communication and structured thinking for the modern workplace. This bootcamp is designed for one outcome: To help you speak with clarity, confidence, and authority—every single time.",
+    price: 7999,
+    date: "Saturday, 28th March & Sunday, 29th March 2026",
+    time: "7:00 PM – 9:00 PM IST on both days",
+    speaker: "Mridu Bhandari",
+    seats: 50,
+    highlights: [
+      "Speak with Confidence in High-Stakes Moments",
+      "Structure Your Thoughts Like a Leader",
+      "Master Voice, Presence & Delivery",
+      "Tell Stories That Influence & Inspire",
+      "Build Executive Presence (Even on Zoom)",
+      "Speak with Impact Power Phrases Guide",
+      "“Own the Screen” Cheatsheet",
+      "Eye Contact Mastery Guide",
+      "Access to Mentorleap Resources"
+    ],
+    offer: "10 participants will receive FREE access to the Bootcamp. The next 50 participants will receive 50 percent discount on the Bootcamp fee.",
+    category: "Communication",
+    imageUrl: "https://images.unsplash.com/photo-1475721027187-402ad2989a3b?w=1000&q=80",
+    zoomLink: "https://us05web.zoom.us/j/85625593374?pwd=VqabWHfa5B5Uf4lkBXCsjtPLOLPw6C.1",
+    meetingId: "856 2559 3374",
+    passcode: "2VZXAJ",
+    updatedAt: new Date()
+  }, { merge: true });
+
+  const masterclassId = "interview-to-offer-letter";
+  await db.collection("events").doc(masterclassId).set({
+    title: "Interview to Offer Letter",
+    category: "Communication Masterclass",
+    description: "The Ultimate Communication Masterclass. Learn how to answer the most commonly asked interview questions with clarity, structure, and confidence.",
+    price: 499,
+    date: "Thursday, 30th April 2026",
+    time: "7:30 PM IST",
+    speaker: "Mridu Bhandari",
+    seats: 100,
+    imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=1000",
+    zoomLink: "https://us05web.zoom.us/j/123456789?pwd=example",
+    meetingId: "123 456 789",
+    passcode: "MASTER",
+    updatedAt: new Date()
+  }, { merge: true });
+
+  // 3. FAQS
+  console.log("Syncing FAQs...");
+  const faqs = [
+    {
+      q: "Who is MentorLeap designed for?",
+      a: "MentorLeap is designed for professionals, managers, entrepreneurs and university students who want to develop stronger public speaking, communication and leadership skills."
+    },
+    {
+      q: "Will MISHA AI support learners during courses?",
+      a: "Yes. MISHA will assist learners throughout their learning journey by providing research support, interview/presentation preparation guidance and structured learning assistance."
+    },
+    {
+      q: "What is the format of the Speak with Impact Bootcamp?",
+      a: "The Speak with Impact Bootcamp is a two-day transformational learning program designed to help professionals communicate with confidence and clarity at the workplace. It is highly interactive, live and offers practical frameworks that can be applied immediately."
+    }
+  ];
+  
+  // Clear old FAQs
+  const faqSnapshot = await db.collection("faqs").get();
+  for (const doc of faqSnapshot.docs) await doc.ref.delete();
+  
+  for (const faq of faqs) {
+    await db.collection("faqs").add({ ...faq, updatedAt: new Date() });
+  }
+
+  // 4. TESTIMONIALS (Reviews)
+  console.log("Syncing Reviews...");
+  const reviews = [
+    {
+      name: "Senior Consultant",
+      location: "Global Consulting Firm",
+      text: "MentorLeap helped me structure my thinking and communicate my ideas much more effectively in meetings and presentations.",
+      stars: 5
+    }
+  ];
+
+  // Clear old reviews
+  const reviewSnapshot = await db.collection("reviews").get();
+  for (const doc of reviewSnapshot.docs) await doc.ref.delete();
+
+  for (const rev of reviews) {
+    await db.collection("reviews").add({ ...rev, updatedAt: new Date() });
+  }
+
+  console.log("--- Sync Complete ---");
+}
+
+syncDynamicData().catch(console.error);
