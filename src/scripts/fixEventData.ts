@@ -9,6 +9,7 @@ async function fixEventData() {
   await db.collection("events").doc(bootcampId).set({
     date: new Date("2026-03-28T19:00:00Z"), 
     displayDate: "Saturday, 28th March & Sunday, 29th March",
+    banner: "/events/speak-with-impact.png",
     zoomLink: "https://us05web.zoom.us/j/85625593374?pwd=VqabWHfa5B5Uf4lkBXCsjtPLOLPw6C.1",
     meetingId: "856 2559 3374",
     passcode: "2VZXAJ",

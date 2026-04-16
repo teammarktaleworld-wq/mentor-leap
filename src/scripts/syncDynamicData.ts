@@ -36,6 +36,7 @@ async function syncDynamicData() {
     time: "7:00 PM – 9:00 PM IST on both days",
     speaker: "Mridu Bhandari",
     seats: 50,
+    banner: "/events/speak-with-impact.png",
     highlights: [
       "Speak with Confidence in High-Stakes Moments",
       "Structure Your Thoughts Like a Leader",
@@ -66,6 +67,7 @@ async function syncDynamicData() {
     time: "7:30 PM IST",
     speaker: "Mridu Bhandari",
     seats: 100,
+    banner: "/events/interview-to-offer-banner.png",
     imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=1000",
     zoomLink: "https://us05web.zoom.us/j/123456789?pwd=example",
     meetingId: "123 456 789",

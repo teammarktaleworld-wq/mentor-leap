@@ -55,6 +55,12 @@ export async function POST(req: NextRequest) {
         if (itemId === "interview-to-offer-letter") {
             if (submittedCoupon === "MASTERCLASSFREE") {
                 price = 0;
+            } else if (submittedCoupon === "CORP100%") {
+                price = 0; // 100% Off
+            } else if (submittedCoupon === "EARLYBIRD") {
+                price = Math.round(499 * 0.75); // 25% Off = 374.25 rounded to 374
+            } else if (submittedCoupon === "TEAM") {
+                price = Math.round(499 * 0.5); // 50% Off = 249.50 rounded to 249
             } else {
                 price = 499;
             }
