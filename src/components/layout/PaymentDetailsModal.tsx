@@ -43,7 +43,7 @@ export default function PaymentDetailsModal({
 
   // Calculate coupon discount
   const calculatePrice = () => {
-    let basePrice = 499; // Interview to Offer Letter price
+    const basePrice = 499; // Interview to Offer Letter price
     let discountedPrice = 499;
     let discount = 0;
 
