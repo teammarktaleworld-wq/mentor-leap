@@ -10,7 +10,6 @@ interface PaymentDetailsModalProps {
   onSubmit: (details: UserDetails) => void;
   initialEmail?: string;
   courseTitle: string;
-  itemId?: string;
 }
 
 export interface UserDetails {
@@ -27,8 +26,7 @@ export default function PaymentDetailsModal({
   onClose, 
   onSubmit, 
   initialEmail,
-  courseTitle,
-  itemId = "interview-to-offer-letter"
+  courseTitle
 }: PaymentDetailsModalProps) {
   const [formData, setFormData] = useState<UserDetails>({
     fullName: "",
@@ -40,31 +38,6 @@ export default function PaymentDetailsModal({
   });
 
   const [errors, setErrors] = useState<Partial<UserDetails>>({});
-
-  // Calculate coupon discount
-  const calculatePrice = () => {
-    const basePrice = 499; // Interview to Offer Letter price
-    let discountedPrice = 499;
-    let discount = 0;
-
-    const coupon = (formData.couponCode || "").toUpperCase();
-
-    if (coupon === "CORP100%" || coupon === "MASTERCLASSFREE") {
-      discountedPrice = 0;
-      discount = basePrice;
-    } else if (coupon === "EARLYBIRD") {
-      discountedPrice = Math.round(basePrice * 0.75);
-      discount = basePrice - discountedPrice;
-    } else if (coupon === "TEAM") {
-      discountedPrice = Math.round(basePrice * 0.5);
-      discount = basePrice - discountedPrice;
-    }
-
-    return { basePrice, discountedPrice, discount };
-  };
-
-  const { basePrice, discountedPrice, discount } = calculatePrice();
-
   const validate = () => {
     const newErrors: Partial<UserDetails> = {};
     if (!formData.fullName) newErrors.fullName = "Name is required";
@@ -208,25 +181,12 @@ export default function PaymentDetailsModal({
               </div>
 
               <div className="pt-4 pb-2">
-                {discount > 0 && (
-                  <div className="mb-4 p-4 bg-gradient-to-r from-[#00e5ff]/10 to-[#6366f1]/10 border border-[#00e5ff]/30 rounded-xl">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-xs text-[#94a3b8] font-semibold">Original Price</span>
-                      <span className="text-sm text-[#94a3b8] line-through">₹{basePrice}</span>
-                    </div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-xs text-[#00e5ff] font-black">Discount ({Math.round((discount/basePrice)*100)}%)</span>
-                      <span className="text-sm text-[#00ff88] font-black">-₹{discount}</span>
-                    </div>
-                    <div className="flex justify-between items-center pt-2 border-t border-[#00e5ff]/20">
-                      <span className="text-xs text-white font-black">FINAL PRICE</span>
-                      <span className="text-lg text-[#00e5ff] font-black">₹{discountedPrice}</span>
-                    </div>
-                  </div>
-                )}
                 <Button fullWidth size="lg" type="submit" className="h-14 tracking-widest">
-                  {[...["MASTERCLASSFREE", "FAMILYFREE", "MENTORFREE"], "CORP100%"].includes(formData.couponCode || "") ? "Claim Free Access" : "Proceed to Payment"} <CheckCircle2 size={16} className="ml-2" />
+                  Proceed to Payment <CheckCircle2 size={16} className="ml-2" />
                 </Button>
+                <p className="text-[9px] text-center text-[#64748b] font-black uppercase tracking-widest mt-3">
+                  Invite code verified securely on checkout
+                </p>
                 <p className="text-[9px] text-center text-[#475569] font-black uppercase tracking-widest mt-4">
                   By clicking proceed, you agree to MentorLeap&apos;s Terms of Service.
                 </p>
@@ -238,3 +198,4 @@ export default function PaymentDetailsModal({
     </AnimatePresence>
   );
 }
+

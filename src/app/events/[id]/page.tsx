@@ -175,6 +175,7 @@ export default function EventDetailsPage() {
         body: JSON.stringify({ 
           itemId: id,
           itemType: "event",
+          couponCode: details.couponCode,
           userDetails: details
         })
       });

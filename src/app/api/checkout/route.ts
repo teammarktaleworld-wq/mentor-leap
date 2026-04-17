@@ -4,6 +4,29 @@ import { verifyUser } from "@/lib/auth-server";
 import { razorpay } from "@/lib/razorpay";
 import { MailService } from "@/lib/mail";
 
+type CouponDiscountRule = (basePrice: number) => number;
+
+const COUPON_RULES: Record<string, Record<string, CouponDiscountRule>> = {
+    "speak-with-impact-bootcamp": {
+        FAMILYFREE: () => 0,
+        MENTORFREE: () => 0,
+        "CORP100%": () => 0,
+        EARLYBIRD: (basePrice) => Math.round(basePrice * 0.75),
+        TEAM: (basePrice) => Math.round(basePrice * 0.5)
+    },
+    "interview-to-offer-letter": {
+        MASTERCLASSFREE: () => 0,
+        "CORP100%": () => 0,
+        EARLYBIRD: (basePrice) => Math.round(basePrice * 0.75),
+        TEAM: (basePrice) => Math.round(basePrice * 0.5)
+    }
+};
+
+function normalizeCouponCode(value: unknown): string {
+    if (typeof value !== "string") return "";
+    return value.trim().toUpperCase();
+}
+
 export async function POST(req: NextRequest) {
     try {
         const decodedToken = await verifyUser(req);
@@ -42,34 +65,27 @@ export async function POST(req: NextRequest) {
 
 
         // 3. Handle Discounts / Early Bird Logic
-        const submittedCoupon = couponCode || userDetails?.couponCode;
+        const rawSubmittedCoupon = couponCode || userDetails?.couponCode;
+        const normalizedCoupon = normalizeCouponCode(rawSubmittedCoupon);
+        console.log("[Checkout] Coupon code received:", {
+            couponCode,
+            userDetailsCoupon: userDetails?.couponCode,
+            normalizedCoupon
+        });
 
-        if (itemId === "speak-with-impact-bootcamp") {
-            if (submittedCoupon === "FAMILYFREE" || submittedCoupon === "MENTORFREE") {
-                price = 0;
-            } else if (submittedCoupon === "CORP100%") {
-                price = 0; // 100% Off
-            } else if (submittedCoupon === "EARLYBIRD") {
-                price = Math.round(1999 * 0.75); // 25% Off = 1499.25 rounded to 1499
-            } else if (submittedCoupon === "TEAM") {
-                price = Math.round(1999 * 0.5); // 50% Off = 999.50 rounded to 999
-            } else {
-                price = 1999;
-            }
+        if (userDetails && normalizedCoupon) {
+            userDetails.couponCode = normalizedCoupon;
         }
 
-        if (itemId === "interview-to-offer-letter") {
-            if (submittedCoupon === "MASTERCLASSFREE") {
-                price = 0;
-            } else if (submittedCoupon === "CORP100%") {
-                price = 0; // 100% Off
-            } else if (submittedCoupon === "EARLYBIRD") {
-                price = Math.round(499 * 0.75); // 25% Off = 374.25 rounded to 374
-            } else if (submittedCoupon === "TEAM") {
-                price = Math.round(499 * 0.5); // 50% Off = 249.50 rounded to 249
-            } else {
-                price = 499;
+        const ruleForItem = COUPON_RULES[itemId]?.[normalizedCoupon];
+        if (normalizedCoupon) {
+            if (!ruleForItem) {
+                return NextResponse.json(
+                    { error: "Invalid invite code. Check code and retry." },
+                    { status: 400 }
+                );
             }
+            price = ruleForItem(price);
         }
 
         // 4. Handle Free Enrollment
@@ -146,6 +162,7 @@ export async function POST(req: NextRequest) {
         }
 
         // 5. Create Razorpay Order
+        console.log(`[Checkout] Creating Razorpay order for ${itemId} with price ₹${price}`);
         const order = await razorpay.orders.create({
             amount: price * 100, // Amount in paise
             currency: "INR",
@@ -158,6 +175,7 @@ export async function POST(req: NextRequest) {
             }
         });
 
+        console.log(`[Checkout] Order created successfully with ID: ${order.id}`);
         return NextResponse.json({ 
             success: true, 
             type: "paid",

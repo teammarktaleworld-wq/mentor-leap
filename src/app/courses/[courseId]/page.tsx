@@ -88,6 +88,7 @@ export default function CourseDetailPage() {
         },
         body: JSON.stringify({ 
           itemId: courseId,
+          couponCode: details.couponCode,
           userDetails: details
         })
       });
