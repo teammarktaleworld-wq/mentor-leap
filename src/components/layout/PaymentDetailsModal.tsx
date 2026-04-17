@@ -203,11 +203,6 @@ export default function PaymentDetailsModal({
                         className="w-full bg-white/[0.03] border border-white/10 rounded-2xl p-4 pl-10 text-sm text-white focus:border-[#00e5ff]/50 outline-none transition-all placeholder:text-[#475569] uppercase font-black"
                       />
                     </div>
-                    <div className="mt-2 text-[8px] text-[#64748b] space-y-0.5">
-                      <p>📌 <span className="text-[#00e5ff]">CORP100%</span> - 100% Off</p>
-                      <p>📌 <span className="text-[#00e5ff]">EARLYBIRD</span> - 25% Off</p>
-                      <p>📌 <span className="text-[#00e5ff]">TEAM</span> - 50% Off</p>
-                    </div>
                   </div>
                 </div>
               </div>
