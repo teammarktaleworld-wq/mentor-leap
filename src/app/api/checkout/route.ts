@@ -47,6 +47,12 @@ export async function POST(req: NextRequest) {
         if (itemId === "speak-with-impact-bootcamp") {
             if (submittedCoupon === "FAMILYFREE" || submittedCoupon === "MENTORFREE") {
                 price = 0;
+            } else if (submittedCoupon === "CORP100%") {
+                price = 0; // 100% Off
+            } else if (submittedCoupon === "EARLYBIRD") {
+                price = Math.round(1999 * 0.75); // 25% Off = 1499.25 rounded to 1499
+            } else if (submittedCoupon === "TEAM") {
+                price = Math.round(1999 * 0.5); // 50% Off = 999.50 rounded to 999
             } else {
                 price = 1999;
             }
