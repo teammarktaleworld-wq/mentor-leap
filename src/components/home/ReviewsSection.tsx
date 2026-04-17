@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 import { fetchReviews } from "@/lib/api";
 
@@ -42,10 +43,12 @@ function LogoRender({ name, id, heightClass }: { name: string, id: string, heigh
       {error ? (
         <span className="text-[#020617] font-bold text-sm md:text-base whitespace-nowrap">{name}</span>
       ) : (
-        <img 
+        <Image 
           src={`/logos/${id}.png`}
           alt={name}
           title={name}
+          width={140}
+          height={60}
           className={`${heightClass} object-contain mix-blend-multiply w-auto max-w-full`}
           onError={() => setError(true)}
         />
