@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db, admin } from "@/lib/firebaseAdmin";
 import { verifyUser } from "@/lib/auth-server";
 import { razorpay } from "@/lib/razorpay";
+import { MailService } from "@/lib/mail";
 import crypto from "crypto";
 
 export async function POST(req: NextRequest) {
@@ -68,6 +69,35 @@ export async function POST(req: NextRequest) {
         });
 
         await batch.commit();
+
+        // 5. Send Booking Confirmation Email
+        try {
+            const userDoc = await userRef.get();
+            const userData = userDoc.data();
+            const userEmail = userData?.email;
+            const userName = userDetails?.name || userData?.name || userEmail?.split("@")[0] || "Student";
+
+            let itemData: any = null;
+            if (itemId === "interview-to-offer-letter") {
+                itemData = { title: "Interview to Offer Letter" };
+            } else {
+                const itemDoc = await itemRef.get();
+                itemData = itemDoc.data();
+            }
+
+            const itemTitle = itemData?.title || itemId;
+
+            if (userEmail) {
+                console.log(`[Payment Verify] Sending booking confirmation email to ${userEmail}...`);
+                await MailService.sendBookingConfirmation(userEmail, userName, itemTitle);
+                console.log("[Payment Verify] Booking confirmation email sent successfully.");
+            } else {
+                console.warn("[Payment Verify] User email not found, skipping email notification.");
+            }
+        } catch (emailError: any) {
+            console.error("[Payment Verify] Error sending booking confirmation email:", emailError.message);
+            // Non-blocking - payment is already successful
+        }
 
         return NextResponse.json({ success: true });
 

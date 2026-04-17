@@ -106,6 +106,36 @@ export async function POST(req: NextRequest) {
             });
 
             await batch.commit();
+
+            // Send Booking Confirmation Email for Free Items
+            try {
+                const userDoc = await userRef.get();
+                const userData = userDoc.data();
+                const userEmail = userData?.email;
+                const userName = userDetails?.name || userData?.name || userEmail?.split("@")[0] || "Student";
+
+                let itemData: any = null;
+                if (itemId === "interview-to-offer-letter") {
+                    itemData = { title: "Interview to Offer Letter" };
+                } else {
+                    const itemDoc = await itemRef.get();
+                    itemData = itemDoc.data();
+                }
+
+                const itemTitle = itemData?.title || itemId;
+
+                if (userEmail) {
+                    console.log(`[Checkout Free] Sending booking confirmation email to ${userEmail}...`);
+                    await MailService.sendBookingConfirmation(userEmail, userName, itemTitle);
+                    console.log("[Checkout Free] Booking confirmation email sent successfully.");
+                } else {
+                    console.warn("[Checkout Free] User email not found, skipping email notification.");
+                }
+            } catch (emailError: any) {
+                console.error("[Checkout Free] Error sending booking confirmation email:", emailError.message);
+                // Non-blocking - enrollment is already successful
+            }
+
             return NextResponse.json({ success: true, type: "free" });
         }
 
