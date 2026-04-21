@@ -7,6 +7,7 @@ import {
     Users,
     BookOpen,
     Calendar,
+    MessageSquare,
     Package,
     Settings,
     LogOut,
@@ -23,6 +24,7 @@ const navItems = [
     { label: 'Curriculum', href: '/admin/courses', icon: BookOpen },
     { label: 'Events & Live', href: '/admin/events', icon: Calendar },
     { label: 'Live Registrations', href: '/admin/registrations', icon: Layers },
+    { label: 'Event Enquiries', href: '/admin/enquiries', icon: MessageSquare },
     { label: 'Coaching Requests', href: '/admin/coaching', icon: Users },
     { label: 'Products', href: '/admin/products', icon: Package },
 

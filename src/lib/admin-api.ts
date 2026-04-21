@@ -318,6 +318,14 @@ export const AdminAPI = {
         return res.json();
     },
 
+    // EVENT ENQUIRIES
+    async getEventEnquiries() {
+        const headers = await getHeaders();
+        const res = await fetch("/api/admin/event-enquiries", { headers });
+        if (!res.ok) throw new Error("Failed to fetch event enquiries");
+        return res.json();
+    },
+
     getHeaders,
 };
 

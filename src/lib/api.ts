@@ -83,6 +83,18 @@ export async function fetchBlogById(id: string) {
 
 export async function fetchReviews() {
   try {
+    const response = await fetch("/api/testimonials", { cache: "no-store" });
+    if (response.ok) {
+      const localReviews = await response.json();
+      if (Array.isArray(localReviews) && localReviews.length > 0) {
+        return localReviews;
+      }
+    }
+  } catch (error) {
+    console.warn("Local testimonials fetch failed. Falling back to Firestore.", error);
+  }
+
+  try {
     const q = query(collection(db, "reviews"));
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));

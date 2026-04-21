@@ -34,6 +34,8 @@ import {
 } from "lucide-react";
 import PaymentDetailsModal, { UserDetails } from "@/components/layout/PaymentDetailsModal";
 import SuccessOverlay from "@/components/ui/SuccessOverlay";
+import { Modal } from "@/components/ui/Modal";
+import { Input, Textarea } from "@/components/ui/Input";
 
 // --- Specialized Content for SWI Bootcamp Event ---
 const SWI_EVENT_CONTENT = {
@@ -133,9 +135,24 @@ export default function EventDetailsPage() {
   const [registering, setRegistering] = useState(false);
   const [isFreeSuccess, setIsFreeSuccess] = useState(false);
   const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
+  const [showEnquiryModal, setShowEnquiryModal] = useState(false);
+  const [submittingEnquiry, setSubmittingEnquiry] = useState(false);
+  const [enquiryForm, setEnquiryForm] = useState({
+    name: "",
+    mobile: "",
+    email: "",
+    profession: "",
+    query: "",
+  });
 
   const isSWI = id === "speak-with-impact-bootcamp";
   const isMasterclass = id === "interview-to-offer-letter";
+
+  useEffect(() => {
+    if (user?.email && !enquiryForm.email) {
+      setEnquiryForm((prev) => ({ ...prev, email: user.email || "" }));
+    }
+  }, [user?.email, enquiryForm.email]);
 
   const { data: event, isLoading } = useQuery({
     queryKey: ["event", id],
@@ -265,6 +282,55 @@ export default function EventDetailsPage() {
       setToast({ show: true, message: e.message, type: "error" });
     } finally {
       setRegistering(false);
+    }
+  };
+
+  const handleEnquiryFieldChange = (field: string, value: string) => {
+    setEnquiryForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmitEnquiry = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const payload = {
+        name: enquiryForm.name.trim(),
+        mobile: enquiryForm.mobile.trim(),
+        email: enquiryForm.email.trim(),
+        profession: enquiryForm.profession.trim(),
+        query: enquiryForm.query.trim(),
+      };
+
+      if (!payload.name || !payload.mobile || !payload.email || !payload.profession || !payload.query) {
+        return setToast({ show: true, message: "Please fill all enquiry fields", type: "error" });
+      }
+
+      setSubmittingEnquiry(true);
+      const res = await fetch("/api/events/enquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...payload,
+          eventId: id,
+          eventTitle: event?.title || "MentorLeap Event",
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to submit enquiry");
+
+      setToast({ show: true, message: "Enquiry submitted successfully", type: "success" });
+      setShowEnquiryModal(false);
+      setEnquiryForm((prev) => ({
+        name: "",
+        mobile: "",
+        email: user?.email || prev.email || "",
+        profession: "",
+        query: "",
+      }));
+    } catch (error: any) {
+      setToast({ show: true, message: error.message || "Unable to submit enquiry", type: "error" });
+    } finally {
+      setSubmittingEnquiry(false);
     }
   };
 
@@ -515,6 +581,17 @@ export default function EventDetailsPage() {
                     </Button>
                   </div>
 
+                  <div className="mb-4">
+                    <Button
+                      variant="outline"
+                      fullWidth
+                      onClick={() => setShowEnquiryModal(true)}
+                      className="h-12 font-black uppercase tracking-widest"
+                    >
+                      Enquiry
+                    </Button>
+                  </div>
+
                   {isSWI && !isRegistered && !isFreeSuccess && (
                     <div className="flex items-center justify-center gap-2 mb-6">
                       <div className="w-2 h-2 rounded-full bg-[#00e5ff] animate-pulse"></div>
@@ -566,6 +643,54 @@ export default function EventDetailsPage() {
         initialEmail={user?.email || undefined}
         courseTitle={event?.title}
       />
+
+      <Modal
+        isOpen={showEnquiryModal}
+        onClose={() => setShowEnquiryModal(false)}
+        title="Event Enquiry Form"
+      >
+        <form onSubmit={handleSubmitEnquiry} className="space-y-4">
+          <Input
+            label="Name"
+            placeholder="Enter full name"
+            value={enquiryForm.name}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEnquiryFieldChange("name", e.target.value)}
+            required
+          />
+          <Input
+            label="Mobile Number"
+            placeholder="Enter mobile number"
+            value={enquiryForm.mobile}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEnquiryFieldChange("mobile", e.target.value)}
+            required
+          />
+          <Input
+            type="email"
+            label="Email"
+            placeholder="Enter email address"
+            value={enquiryForm.email}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEnquiryFieldChange("email", e.target.value)}
+            required
+          />
+          <Input
+            label="Profession"
+            placeholder="Enter profession"
+            value={enquiryForm.profession}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEnquiryFieldChange("profession", e.target.value)}
+            required
+          />
+          <Textarea
+            label="Query"
+            placeholder="Write your query"
+            value={enquiryForm.query}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleEnquiryFieldChange("query", e.target.value)}
+            required
+          />
+          <Button type="submit" fullWidth disabled={submittingEnquiry}>
+            {submittingEnquiry ? "Submitting..." : "Submit Enquiry"}
+          </Button>
+        </form>
+      </Modal>
 
       <SuccessOverlay
         isOpen={showSuccessOverlay}
