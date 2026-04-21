@@ -49,15 +49,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Google Analytics 4 Placeholder */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+        {/* Google Analytics 4 */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFRWG8FSCC"></script>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-XXXXXXXXXX');
+              gtag('config', 'G-DFRWG8FSCC');
             `,
           }}
         />
