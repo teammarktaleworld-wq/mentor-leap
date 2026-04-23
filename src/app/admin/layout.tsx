@@ -1,3 +1,53 @@
+// "use client";
+// import React, { useEffect } from "react";
+// import { useRouter } from "next/navigation";
+// import { useAuth } from "@/components/providers/AuthProvider";
+// import AdminSidebar from "@/components/admin/AdminSidebar";
+// import AdminHeader from "@/components/admin/AdminHeader";
+// import { Loader } from "@/components/ui/Loader";
+
+// export default function AdminLayout({ children }: { children: React.ReactNode }) {
+//   const { isAdmin, loading } = useAuth();
+//   const router = useRouter();
+//   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+
+//   useEffect(() => {
+//     if (!loading && !isAdmin) {
+//       router.replace("/dashboard");
+//     }
+//   }, [isAdmin, loading, router]);
+
+//   if (loading) {
+//     return (
+//       <div className="h-screen w-full flex items-center justify-center bg-[#020617]">
+//         <Loader />
+//       </div>
+//     );
+//   }
+
+//   if (!isAdmin) return null;
+
+//   return (
+//     <div className="min-h-screen flex bg-[#020617] text-white overflow-hidden">
+//       <AdminSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+//       <div className="flex-1 flex flex-col h-screen overflow-hidden">
+//         <AdminHeader onMenuClick={() => setIsSidebarOpen(true)} />
+//         <main className="flex-1 overflow-y-auto bg-[#04091a] p-4 md:p-10 custom-scrollbar relative">
+//           {/* Subtle admin-themed glow */}
+//           <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-[#00e5ff08] blur-[150px] rounded-full pointer-events-none"></div>
+
+//           <div className="relative z-10 w-full max-w-7xl mx-auto">
+//             {children}
+//           </div>
+//         </main>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+
 "use client";
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -7,15 +57,16 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import { Loader } from "@/components/ui/Loader";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { isAdmin, loading } = useAuth();
+  const { user, isAdmin, loading } = useAuth(); // ✅ include user
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   useEffect(() => {
-    if (!loading && !isAdmin) {
+    // ✅ only redirect when we are SURE
+    if (!loading && user && !isAdmin) {
       router.replace("/dashboard");
     }
-  }, [isAdmin, loading, router]);
+  }, [user, isAdmin, loading, router]);
 
   if (loading) {
     return (
@@ -25,6 +76,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
+  // ✅ prevent rendering until user is confirmed
+  if (!user) return null;
+
   if (!isAdmin) return null;
 
   return (
@@ -33,7 +87,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
         <AdminHeader onMenuClick={() => setIsSidebarOpen(true)} />
         <main className="flex-1 overflow-y-auto bg-[#04091a] p-4 md:p-10 custom-scrollbar relative">
-          {/* Subtle admin-themed glow */}
           <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-[#00e5ff08] blur-[150px] rounded-full pointer-events-none"></div>
 
           <div className="relative z-10 w-full max-w-7xl mx-auto">

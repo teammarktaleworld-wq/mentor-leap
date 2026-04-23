@@ -12,12 +12,24 @@ export default function BlogListingPage() {
   const [blogs, setBlogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // useEffect(() => {
+  //   fetchBlogs().then((data: any[]) => {
+  //     setBlogs(data);
+  //     setLoading(false);
+  //   }).catch(() => setLoading(false));
+  // }, []);
   useEffect(() => {
-    fetchBlogs().then((data: any[]) => {
+  fetchBlogs()
+    .then((data: any[]) => {
+      console.log("Blogs received in UI:", data); // 👈 ADD THIS
       setBlogs(data);
       setLoading(false);
-    }).catch(() => setLoading(false));
-  }, []);
+    })
+    .catch((err) => {
+      console.error("Error fetching blogs:", err); // 👈 ADD THIS
+      setLoading(false);
+    });
+}, []);
 
   return (
     <PageWrapper>

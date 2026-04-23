@@ -163,12 +163,12 @@ export default function OfferBanner() {
                         Interview to Offer Letter – Communication Masterclass – 30th April 2026
                       </span>
                     </div>
-                    <div className="flex items-center gap-3">
+                    {/* <div className="flex items-center gap-3">
                       <div className="w-1.5 h-1.5 rounded-full bg-[#00e5ff] animate-pulse" />
                       <span className="text-white/90 text-sm font-bold tracking-wide">
-                        Speak with Impact Bootcamp – 28–29 March 2026
+                        Speak speak speak with Impact Bootcamp – 28–29 March 2026
                       </span>
-                    </div>
+                    </div> */}
                     <div className="flex items-center gap-3">
                       <div className="w-1.5 h-1.5 rounded-full bg-[#6366f1] animate-pulse" />
                       <span className="text-white/90 text-sm font-bold tracking-wide">

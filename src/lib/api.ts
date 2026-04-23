@@ -55,11 +55,45 @@ export async function fetchCourseData() {
   }
 }
 
+// export async function fetchBlogs() {
+//   try {
+//     const q = query(collection(db, "blogs"));
+//     const snapshot = await getDocs(q);
+//     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+//   } catch (error) {
+//     console.error("Firestore fetch error:", error);
+//     return [];
+//   }
+// }
+
+// export async function fetchBlogById(id: string) {
+//   try {
+//     const { doc, getDoc } = await import("firebase/firestore");
+//     const docRef = doc(db, "blogs", id);
+//     const docSnap = await getDoc(docRef);
+//     if (docSnap.exists()) {
+//       return { id: docSnap.id, ...docSnap.data() };
+//     }
+//     return null;
+//   } catch (error) {
+//     console.error("Firestore fetch error:", error);
+//     return null;
+//   }
+// }
+
 export async function fetchBlogs() {
   try {
     const q = query(collection(db, "blogs"));
     const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+    const blogs = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    console.log("Fetched blogs:", blogs); // 👈 ADD THIS
+
+    return blogs;
   } catch (error) {
     console.error("Firestore fetch error:", error);
     return [];
@@ -71,9 +105,14 @@ export async function fetchBlogById(id: string) {
     const { doc, getDoc } = await import("firebase/firestore");
     const docRef = doc(db, "blogs", id);
     const docSnap = await getDoc(docRef);
+
     if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() };
+      const blog = { id: docSnap.id, ...docSnap.data() };
+      console.log("Fetched blog:", blog); // 👈 ADD THIS
+      return blog;
     }
+
+    console.log("No blog found for ID:", id); // 👈 ADD THIS
     return null;
   } catch (error) {
     console.error("Firestore fetch error:", error);

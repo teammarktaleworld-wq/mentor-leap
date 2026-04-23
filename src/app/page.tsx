@@ -11,6 +11,7 @@ import CorporateSection   from "@/components/home/CorporateSection";
 import FAQSection         from "@/components/home/FAQSection";
 import RecognitionSection from "@/components/home/RecognitionSection";
 import FinalCTA           from "@/components/home/FinalCTA";
+import VideoTestimonials from "@/components/home/VideosTestimonials";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <IndustrySection />
       <ProgramsSection />
       <VisionFounder />
+      <VideoTestimonials />
       <RecognitionSection />
       <ReviewsSection />
       <LaunchSection />
