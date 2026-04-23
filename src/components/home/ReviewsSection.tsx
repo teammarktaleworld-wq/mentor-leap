@@ -1,3 +1,5 @@
+
+
 // "use client";
 
 // import { useEffect, useRef, useState } from "react";
@@ -35,6 +37,163 @@
 //   { name: "360 One Wealth", id: "360one", domain: "360.one" }
 // ];
 
+// // 20 realistic fallback reviews
+// const STATIC_REVIEWS = [
+   
+//   {
+//     name: "Aarti Shroff",
+//     role: "",
+//     initials: "AS",
+//     color: "#1a56db",
+//     bg: "#ebf5ff",
+//     quote:
+//       "Thank you so much Mridu for your time and teaching. You have made a big difference in each one of our public speaking and we can see how well we have improved. Will definitely keep in touch and keep asking for your support often.",
+//   },
+//   {
+//     name: "Sujit Danait",
+//     role: "",
+//     initials: "SD",
+//     color: "#057a55",
+//     bg: "#e3fbf6",
+//     quote:
+//       "It was a great learning experience. Because of your step-by-step approach to effective public speaking, now it looks achievable. Effective communication is probably the single most important skill in life and I am sure these learnings will help all of us to do better in our lives.",
+//   },
+//   {
+//     name: "Paramesh Sarma",
+//     role: "Senior Manager, Delhi/NCR",
+//     initials: "PS",
+//     color: "#9f580a",
+//     bg: "#fffbeb",
+//     quote:
+//       "I had an amazing experience with Mentorleap's Public Speaking training. Mridu's guidance was excellent and her approach was engaging, making the program a wonderfully enriching experience. I feel more confident and prepared for speaking engagements. Highly recommended!",
+//   },
+//   {
+//     name: "Ruchi Halakhandi",
+//     role: "",
+//     initials: "RH",
+//     color: "#c81e1e",
+//     bg: "#fff5f5",
+//     quote:
+//       "Mridu, thank you for this excellent course. It's a very good mix of theory & practical as well as the feature of being able to track one's progress is quite useful. Thank you also to all the cohort mates. Made the classes all the more interactive & interesting.",
+//   },
+//   {
+//     name: "Leena Dayal",
+//     role: "",
+//     initials: "LD",
+//     color: "#6c2bd9",
+//     bg: "#f5f3ff",
+//     quote:
+//       "Thank you Mridu, for being a great mentor. Learning with you and under your guidance was a delight. Will surely stay in touch and be connected with you and all members of this group. Wishing you and all in group peace and comfort all your way!",
+//   },
+//   {
+//     name: "Jigar Gogri",
+//     role: "Mentorleap Cohort",
+//     initials: "JG",
+//     color: "#1a56db",
+//     bg: "#ebf5ff",
+//     quote:
+//       "I would like to thank Mridu Bhandari for coming up with this wonderful training to speak effectively! I loved the content discussed during the live classes and the exercises. Thanks for being a wonderful coach! Looking forward to meeting you in person!",
+//   },
+//   {
+//     name: "Pravin Chaudhary",
+//     role: "",
+//     initials: "PC",
+//     color: "#057a55",
+//     bg: "#e3fbf6",
+//     quote:
+//       "It was a great session and I learned lots from everyone. If any one gets a chance to come to Ahmedabad, please ping me — we will have good lunch or dinner together with gujju style. You are most welcome with family!",
+//   },
+//   {
+//     name: "Ajay Singh",
+//     role: "Mentorleap Cohort",
+//     initials: "AS",
+//     color: "#9f580a",
+//     bg: "#fffbeb",
+//     quote:
+//       "Thank you Mridu Ma'am! You gave me the opportunity to be part of this cohort. It was wonderful. I learnt many things which will help me go ahead in my business with more confidence.",
+//   },
+//   {
+//     name: "Adhyuth",
+//     role: "Mentorleap Cohort",
+//     initials: "AD",
+//     color: "#c81e1e",
+//     bg: "#fff5f5",
+//     quote:
+//       "Thanks Mridu. Wonderful cohort this was! As promised, I will have my brother enroll soon for the next. May we all be the best version of us on stage.",
+//   },
+//   {
+//     name: "Alice Ando",
+//     role: "Senior HR Manager, Manila",
+//     initials: "AA",
+//     color: "#6c2bd9",
+//     bg: "#f5f3ff",
+//     quote:
+//       "It is indeed a mentorship program. I had a great learning experience. Mridu made me feel comfortable and allowed me to be myself during practical exercises.",
+//   },
+//   {
+//     name: "Laila Saleh",
+//     role: "Associate Senior Manager, Jordan",
+//     initials: "LS",
+//     color: "#1a56db",
+//     bg: "#ebf5ff",
+//     quote:
+//       "I really liked it and the programme will help you become more confident!",
+//   },
+//   {
+//     name: "Abby Valles",
+//     role: "Manager – Finance, Manila",
+//     initials: "AV",
+//     color: "#057a55",
+//     bg: "#e3fbf6",
+//     quote:
+//       "It was a great program, and the content could make a difference in our day-to-day lives. I found it very interactive — hearing instructors' thoughts and tips is worth the value for money. I am happy I joined the session!",
+//   },
+//   {
+//     name: "Ashish Koul",
+//     role: "Senior Manager, Noida",
+//     initials: "AK",
+//     color: "#9f580a",
+//     bg: "#fffbeb",
+//     quote:
+//       "I recently attended sessions in Mentorleap's Speak with Impact course and I confidently say it was a game changer for me. The mentor's approach was not only engaging but also tailored to meet individual needs. Kudos to Mentorleap for a fantastic learning experience! Highly recommended.",
+//   },
+//   {
+//     name: "Riza Rosarial",
+//     role: "Operations Manager – Recruitment, Manila",
+//     initials: "RR",
+//     color: "#c81e1e",
+//     bg: "#fff5f5",
+//     quote:
+//       "It was a very good learning experience with other Managers and I would recommend other leaders to also go through the program. It was fun interacting with other participants and applying what we learned during class exercises.",
+//   },
+//   {
+//     name: "Thet Rivera",
+//     role: "Manager, Manila",
+//     initials: "TR",
+//     color: "#6c2bd9",
+//     bg: "#f5f3ff",
+//     quote:
+//       "It was a good 8 sessions and I really enjoyed every course per session. I learned a lot and I know that it will definitely help me considering that I'm in the field of sales and business development.",
+//   },
+//   {
+//     name: "Ma. Cecilia Amarille",
+//     role: "Associate Manager, Manila",
+//     initials: "MC",
+//     color: "#1a56db",
+//     bg: "#ebf5ff",
+//     quote:
+//       "I enjoyed the sessions with my colleagues and Mridu! Wish we have more of these! The next skill I want to learn is that of business writing!",
+//   },
+//   {
+//     name: "Dima Talafha",
+//     role: "Senior Manager, UAE",
+//     initials: "DT",
+//     color: "#057a55",
+//     bg: "#e3fbf6",
+//     quote:
+//       "I would highly recommend the Mentorleap's Speak with Impact course to anyone who wants to improve their public speaking skills.",
+//   },
+// ];
 // function LogoRender({ name, id, heightClass }: { name: string, id: string, heightClass: string }) {
 //   const [error, setError] = useState(false);
 
@@ -43,7 +202,7 @@
 //       {error ? (
 //         <span className="text-[#020617] font-bold text-sm md:text-base whitespace-nowrap">{name}</span>
 //       ) : (
-//         <Image 
+//         <Image
 //           src={`/logos/${id}.png`}
 //           alt={name}
 //           title={name}
@@ -59,24 +218,14 @@
 
 // function Stars({ count }: { count: number }) {
 //   return (
-//     <div style={{ color: "#facc15", fontSize: "15px", marginBottom: "10px" }}>
+//     <div style={{ color: "#facc15", fontSize: "14px", marginBottom: "10px" }}>
 //       {[1, 2, 3, 4, 5].map((s) => (
-//         <span
-//           key={s}
-//           style={{
-//             opacity: s <= count ? 1 : 0.25,
-//             display: "inline-block",
-//             transition: `opacity 0.3s ease ${s * 0.05}s`,
-//           }}
-//         >
-//           ★
-//         </span>
+//         <span key={s} style={{ opacity: s <= count ? 1 : 0.25 }}>★</span>
 //       ))}
 //     </div>
 //   );
 // }
 
-// // rolling big number counter
 // function RatingCounter({ visible, target = 4.9 }: { visible: boolean; target?: number }) {
 //   const [val, setVal] = useState(0);
 //   useEffect(() => {
@@ -94,27 +243,48 @@
 //   return <>{val.toFixed(1)}</>;
 // }
 
+// // Split reviews into two rows for the dual marquee
+// function splitIntoRows<T>(arr: T[]): [T[], T[]] {
+//   const mid = Math.ceil(arr.length / 2);
+//   return [arr.slice(0, mid), arr.slice(mid)];
+// }
+
+// const avatarColors = [
+//   "#00e5ff", "#6366f1", "#a78bfa", "#22d3ee", "#818cf8",
+//   "#00e5ff", "#6366f1", "#a78bfa", "#22d3ee", "#818cf8",
+// ];
+
 // export default function ReviewsSection() {
 //   const { ref, visible } = useInView();
-//   const [hovered, setHovered] = useState<number | null>(null);
 //   const [reviews, setReviews] = useState<any[]>([]);
 //   const [loading, setLoading] = useState(true);
 
+//   // useEffect(() => {
+//   //   fetchReviews().then((data: any[]) => {
+//   //     // Merge API reviews with static ones, deduplicate by id
+//   //     const merged = [...STATIC_REVIEWS];
+//   //     data.forEach((r: any) => {
+//   //       if (!merged.find((s) => s.id === r.id)) merged.push(r);
+//   //     });
+//   //     setReviews(merged);
+//   //     setLoading(false);
+//   //   }).catch(() => {
+//   //     setReviews(STATIC_REVIEWS);
+//   //     setLoading(false);
+//   //   });
+//   // }, []);
+
 //   useEffect(() => {
-//     fetchReviews().then((data: any[]) => {
-//       setReviews(data);
-//       setLoading(false);
-//     });
-//   }, []);
+//   // Use only curated static reviews — ignore API data to prevent test/dummy entries showing
+//   setReviews(STATIC_REVIEWS);
+//   setLoading(false);
+// }, []);
 
-//   // avatar gradient colours cycling
-//   const avatarColors = [
-//     "#00e5ff", "#6366f1", "#00e5ff", "#6366f1", "#00e5ff", "#6366f1",
-//   ];
+//   const [row1, row2] = splitIntoRows(reviews);
 
-//   const averageRating = reviews.length > 0 
+//   const averageRating = reviews.length > 0
 //     ? (reviews.reduce((acc, r) => acc + (r.stars || 5), 0) / reviews.length).toFixed(1)
-//     : "0.0";
+//     : "4.9";
 
 //   return (
 //     <>
@@ -125,50 +295,103 @@
 //           -webkit-text-fill-color: transparent;
 //           background-clip: text;
 //         }
-//         .review-card {
-//           transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
-//         }
-//         .review-card:hover {
-//           transform: translateY(-8px);
-//           border-color: rgba(0,229,255,0.35) !important;
-//           box-shadow: 0 20px 50px rgba(0,229,255,0.1);
-//         }
-//         .review-avatar {
-//           transition: transform 0.3s ease, box-shadow 0.3s ease;
-//         }
-//         .review-card:hover .review-avatar {
-//           transform: scale(1.1);
-//           box-shadow: 0 0 16px rgba(0,229,255,0.5);
-//         }
-//         .review-quote {
-//           position: absolute;
-//           top: 16px;
-//           right: 20px;
-//           font-size: 48px;
-//           line-height: 1;
-//           color: rgba(0,229,255,0.08);
-//           font-family: Georgia, serif;
-//           pointer-events: none;
-//           transition: color 0.3s ease;
-//         }
-//         .review-card:hover .review-quote {
-//           color: rgba(0,229,255,0.15);
-//         }
+
 //         @keyframes ratingPulse {
 //           0%   { text-shadow: 0 0 20px rgba(0,229,255,0.4); }
 //           50%  { text-shadow: 0 0 40px rgba(0,229,255,0.8); }
 //           100% { text-shadow: 0 0 20px rgba(0,229,255,0.4); }
 //         }
-//         .rating-number {
-//           animation: ratingPulse 3s ease-in-out infinite;
-//         }
+//         .rating-number { animation: ratingPulse 3s ease-in-out infinite; }
+
 //         @keyframes summaryFadeUp {
 //           from { opacity: 0; transform: translateY(20px); }
 //           to   { opacity: 1; transform: translateY(0); }
 //         }
-//         .summary-animate {
-//           animation: summaryFadeUp 0.7s ease 0.3s both;
+//         .summary-animate { animation: summaryFadeUp 0.7s ease 0.3s both; }
+
+//         /* Marquee rows */
+//         @keyframes marqueeLeft {
+//           0%   { transform: translateX(0); }
+//           100% { transform: translateX(-50%); }
 //         }
+//         @keyframes marqueeRight {
+//           0%   { transform: translateX(-50%); }
+//           100% { transform: translateX(0); }
+//         }
+
+//         .marquee-track {
+//           display: flex;
+//           overflow: hidden;
+//           width: 100%;
+//           mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+//           -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+//         }
+
+//         .marquee-row-left {
+//           display: flex;
+//           width: max-content;
+//           animation: marqueeLeft 55s linear infinite;
+//         }
+//         .marquee-row-right {
+//           display: flex;
+//           width: max-content;
+//           animation: marqueeRight 50s linear infinite;
+//         }
+//         .marquee-row-left:hover,
+//         .marquee-row-right:hover {
+//           animation-play-state: paused;
+//         }
+
+//         /* Review card */
+//         .review-card {
+//           flex-shrink: 0;
+//           width: 320px;
+//           background: #020617;
+//           border: 1px solid rgba(255,255,255,0.08);
+//           border-radius: 16px;
+//           padding: 22px 24px;
+//           margin: 0 12px;
+//           position: relative;
+//           transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+//           cursor: default;
+//         }
+//         .review-card:hover {
+//           border-color: rgba(0,229,255,0.3);
+//           box-shadow: 0 16px 48px rgba(0,229,255,0.08);
+//           transform: translateY(-4px);
+//         }
+//         .review-quote-mark {
+//           position: absolute;
+//           top: 14px;
+//           right: 18px;
+//           font-size: 52px;
+//           line-height: 1;
+//           color: rgba(0,229,255,0.07);
+//           font-family: Georgia, serif;
+//           pointer-events: none;
+//           transition: color 0.3s;
+//         }
+//         .review-card:hover .review-quote-mark {
+//           color: rgba(0,229,255,0.14);
+//         }
+
+//         .review-avatar {
+//           width: 40px;
+//           height: 40px;
+//           border-radius: 50%;
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           font-weight: 700;
+//           font-size: 15px;
+//           flex-shrink: 0;
+//           transition: transform 0.3s ease, box-shadow 0.3s ease;
+//         }
+//         .review-card:hover .review-avatar {
+//           transform: scale(1.1);
+//         }
+
+//         /* Companies marquee */
 //         @keyframes marqueeX {
 //           0% { transform: translateX(0); }
 //           100% { transform: translateX(-50%); }
@@ -187,117 +410,131 @@
 //           width: max-content;
 //           animation: marqueeX 45s linear infinite;
 //         }
-//         .marquee-content:hover {
-//           animation-play-state: paused;
-//         }
+//         .marquee-content:hover { animation-play-state: paused; }
 //       `}</style>
 
 //       <section
 //         ref={ref}
-//         className="w-full px-5 text-center"
-//         style={{ padding: "120px 20px" }}
+//         className="w-full text-center"
+//         style={{ padding: "120px 0" }}
 //       >
 //         {/* TITLE */}
-//         <h2
-//           className="text-white font-bold mb-10"
-//           style={{
-//             fontSize: "42px",
-//             opacity: visible ? 1 : 0,
-//             transform: visible ? "translateY(0)" : "translateY(-20px)",
-//             transition: "opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s",
-//           }}
-//         >
-//           What Professionals Say About{" "}
-//           <span className="reviews-gradient-text">MentorLeap</span>
-//         </h2>
+//         <div style={{ padding: "0 20px" }}>
+//           <h2
+//             className="text-white font-bold mb-10"
+//             style={{
+//               fontSize: "42px",
+//               opacity: visible ? 1 : 0,
+//               transform: visible ? "translateY(0)" : "translateY(-20px)",
+//               transition: "opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s",
+//             }}
+//           >
+//             What Professionals Say About{" "}
+//             <span className="reviews-gradient-text">MentorLeap</span>
+//           </h2>
 
-//         {/* RATING SUMMARY */}
-//         {visible && (
-//           <div className="summary-animate mb-14">
-//             <h3
-//               className="rating-number font-bold mb-2"
-//               style={{ fontSize: "56px", color: "#00e5ff" }}
-//             >
-//               <RatingCounter visible={visible} target={Number(averageRating)} />
-//             </h3>
-//             <div style={{ color: "#facc15", fontSize: "22px", marginBottom: "8px" }}>
-//               ★★★★★
+//           {/* RATING SUMMARY */}
+//           {visible && (
+//             <div className="summary-animate mb-16">
+//               <h3
+//                 className="rating-number font-bold mb-2"
+//                 style={{ fontSize: "56px", color: "#00e5ff" }}
+//               >
+//                 <RatingCounter visible={visible} target={Number(averageRating)} />
+//               </h3>
+//               <div style={{ color: "#facc15", fontSize: "22px", marginBottom: "8px" }}>
+//                 ★★★★★
+//               </div>
+//               <p style={{ color: "#94a3b8", fontSize: "14px" }}>
+//                 Based on {reviews.length}+ professional reviews
+//               </p>
 //             </div>
-//             <p style={{ color: "#94a3b8", fontSize: "14px" }}>
-//               Based on {reviews.length} professional reviews
-//             </p>
+//           )}
+//         </div>
+
+//         {/* SLIDING REVIEW ROWS */}
+//         {!loading && reviews.length > 0 && (
+//           <div
+//             style={{
+//               display: "flex",
+//               flexDirection: "column",
+//               gap: "20px",
+//               opacity: visible ? 1 : 0,
+//               transition: "opacity 0.8s ease 0.3s",
+//             }}
+//           >
+//             {/* ROW 1 — slides left */}
+//             <div className="marquee-track">
+//               <div className="marquee-row-left">
+//                 {[...row1, ...row1].map((r, i) => (
+//                   <div key={`r1-${i}`} className="review-card">
+//                     <div className="review-quote-mark">"</div>
+//                     <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
+//                       <div
+//                         className="review-avatar"
+//                         style={{
+//                           background: `linear-gradient(135deg, ${avatarColors[i % avatarColors.length]}33, #0f172a)`,
+//                           border: `2px solid ${avatarColors[i % avatarColors.length]}`,
+//                           color: avatarColors[i % avatarColors.length],
+//                         }}
+//                       >
+//                         {r.initial || r.name?.[0] || "?"}
+//                       </div>
+//                       <div style={{ textAlign: "left" }}>
+//                         <div style={{ color: "white", fontWeight: 600, fontSize: "14px" }}>{r.name}</div>
+//                         <div style={{ color: "#6366f1", fontSize: "11px", marginTop: "1px" }}>{r.role || ""}</div>
+//                         <div style={{ color: "#64748b", fontSize: "11px" }}>📍 {r.location}</div>
+//                       </div>
+//                     </div>
+//                     <Stars count={r.stars || 5} />
+//                     <p style={{ color: "#cbd5f5", fontSize: "13px", lineHeight: "1.65", textAlign: "left" }}>
+//                       {r.text}
+//                     </p>
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+
+//             {/* ROW 2 — slides right */}
+//             <div className="marquee-track">
+//               <div className="marquee-row-right">
+//                 {[...row2, ...row2].map((r, i) => (
+//                   <div key={`r2-${i}`} className="review-card">
+//                     <div className="review-quote-mark">"</div>
+//                     <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
+//                       <div
+//                         className="review-avatar"
+//                         style={{
+//                           background: `linear-gradient(135deg, ${avatarColors[(i + 5) % avatarColors.length]}33, #0f172a)`,
+//                           border: `2px solid ${avatarColors[(i + 5) % avatarColors.length]}`,
+//                           color: avatarColors[(i + 5) % avatarColors.length],
+//                         }}
+//                       >
+//                         {r.initial || r.name?.[0] || "?"}
+//                       </div>
+//                       <div style={{ textAlign: "left" }}>
+//                         <div style={{ color: "white", fontWeight: 600, fontSize: "14px" }}>{r.name}</div>
+//                         <div style={{ color: "#00e5ff", fontSize: "11px", marginTop: "1px" }}>{r.role || ""}</div>
+//                         <div style={{ color: "#64748b", fontSize: "11px" }}>📍 {r.location}</div>
+//                       </div>
+//                     </div>
+//                     <Stars count={r.stars || 5} />
+//                     <p style={{ color: "#cbd5f5", fontSize: "13px", lineHeight: "1.65", textAlign: "left" }}>
+//                       {r.text}
+//                     </p>
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
 //           </div>
 //         )}
 
-//         {/* GRID */}
-//         <div
-//           className="mx-auto grid gap-8"
-//           suppressHydrationWarning
-//           style={{
-//             maxWidth: "1200px",
-//             gridTemplateColumns: loading || reviews.length === 0 ? "1fr" : "repeat(3, 1fr)",
-//           }}
-//         >
-//           {loading ? (
-//             <div className="text-[#94a3b8] animate-pulse py-20 bg-white/5 rounded-3xl border border-white/10">Synchronizing testimonials...</div>
-//           ) : reviews.length === 0 ? (
-//             <div className="text-[#94a3b8] italic py-20 bg-white/5 rounded-3xl border border-white/10">Be the first to share your experience with MentorLeap.</div>
-//           ) : reviews.map((r, i) => (
-//             <div
-//               key={r.id || r.name}
-//               className="review-card relative rounded-xl text-left"
-//               onMouseEnter={() => setHovered(i)}
-//               onMouseLeave={() => setHovered(null)}
-//               style={{
-//                 background: "#020617",
-//                 padding: "25px",
-//                 border: "1px solid rgba(255,255,255,0.08)",
-//                 opacity: visible ? 1 : 0,
-//                 transform: visible ? "translateY(0)" : "translateY(30px)",
-//                 transition: `opacity 0.5s ease ${0.3 + i * 0.08}s, transform 0.5s ease ${0.3 + i * 0.08}s`,
-//               }}
-//             >
-//               {/* BIG QUOTE */}
-//               <div className="review-quote">"</div>
-
-//               {/* HEADER */}
-//               <div className="flex items-center gap-3 mb-3">
-//                 <div
-//                   className="review-avatar flex items-center justify-center rounded-full font-bold flex-shrink-0"
-//                   style={{
-//                     width: "42px",
-//                     height: "42px",
-//                     background: `linear-gradient(135deg, ${avatarColors[i % avatarColors.length]}, #020617)`,
-//                     border: `2px solid ${avatarColors[i % avatarColors.length]}`,
-//                     color: avatarColors[i % avatarColors.length],
-//                     fontSize: "16px",
-//                   }}
-//                 >
-//                   {r.initial || (r.name ? r.name[0] : "?")}
-//                 </div>
-//                 <div>
-//                   <h4 className="text-white font-semibold" style={{ fontSize: "15px" }}>
-//                     {r.name}
-//                   </h4>
-//                   <span style={{ fontSize: "12px", color: "#94a3b8" }}>
-//                     📍 {r.location}
-//                   </span>
-//                 </div>
-//               </div>
-
-//               {/* STARS */}
-//               <Stars count={r.stars || 5} />
-
-//               {/* TEXT */}
-//               <p style={{ color: "#cbd5f5", fontSize: "14px", lineHeight: "1.6" }}>
-//                 {r.text}
-//               </p>
-//             </div>
-//           ))}
-//         </div>
+//         {loading && (
+//           <div className="text-[#94a3b8] animate-pulse py-20">Loading reviews...</div>
+//         )}
 
 //         {/* WHERE OUR LEARNERS WORK (COMPANIES) */}
-//         <div className="mt-28" style={{ opacity: visible ? 1 : 0, transition: "opacity 0.8s ease 0.4s" }}>
+//         <div className="mt-28 px-5" style={{ opacity: visible ? 1 : 0, transition: "opacity 0.8s ease 0.4s" }}>
 //           <h3 className="text-[#94a3b8] text-xs font-black uppercase tracking-[0.3em] mb-10">
 //             Our Learners Work At
 //           </h3>
@@ -308,7 +545,6 @@
 //                   <LogoRender name={logo.name} id={logo.id} heightClass="h-7 md:h-12" />
 //                 </div>
 //               ))}
-//               {/* Duplicate for infinite loop without gaps */}
 //               {companies.map((logo, i) => (
 //                 <div key={logo.name + "-dup-" + i} className="px-6 md:px-10 flex-shrink-0">
 //                   <LogoRender name={logo.name} id={logo.id} heightClass="h-7 md:h-12" />
@@ -321,6 +557,393 @@
 //     </>
 //   );
 // }
+
+
+
+
+
+
+
+
+
+
+// // "use client";
+
+// // import { useRef, useEffect, useState } from "react";
+
+// // const testimonials = [
+// //   {
+// //     name: "Aarti Shroff",
+// //     role: "",
+// //     initials: "AS",
+// //     color: "#1a56db",
+// //     bg: "#ebf5ff",
+// //     quote:
+// //       "Thank you so much Mridu for your time and teaching. You have made a big difference in each one of our public speaking and we can see how well we have improved. Will definitely keep in touch and keep asking for your support often.",
+// //   },
+// //   {
+// //     name: "Sujit Danait",
+// //     role: "",
+// //     initials: "SD",
+// //     color: "#057a55",
+// //     bg: "#e3fbf6",
+// //     quote:
+// //       "It was a great learning experience. Because of your step-by-step approach to effective public speaking, now it looks achievable. Effective communication is probably the single most important skill in life and I am sure these learnings will help all of us to do better in our lives.",
+// //   },
+// //   {
+// //     name: "Paramesh Sarma",
+// //     role: "Senior Manager, Delhi/NCR",
+// //     initials: "PS",
+// //     color: "#9f580a",
+// //     bg: "#fffbeb",
+// //     quote:
+// //       "I had an amazing experience with Mentorleap's Public Speaking training. Mridu's guidance was excellent and her approach was engaging, making the program a wonderfully enriching experience. I feel more confident and prepared for speaking engagements. Highly recommended!",
+// //   },
+// //   {
+// //     name: "Ruchi Halakhandi",
+// //     role: "",
+// //     initials: "RH",
+// //     color: "#c81e1e",
+// //     bg: "#fff5f5",
+// //     quote:
+// //       "Mridu, thank you for this excellent course. It's a very good mix of theory & practical as well as the feature of being able to track one's progress is quite useful. Thank you also to all the cohort mates. Made the classes all the more interactive & interesting.",
+// //   },
+// //   {
+// //     name: "Leena Dayal",
+// //     role: "",
+// //     initials: "LD",
+// //     color: "#6c2bd9",
+// //     bg: "#f5f3ff",
+// //     quote:
+// //       "Thank you Mridu, for being a great mentor. Learning with you and under your guidance was a delight. Will surely stay in touch and be connected with you and all members of this group. Wishing you and all in group peace and comfort all your way!",
+// //   },
+// //   {
+// //     name: "Jigar Gogri",
+// //     role: "Mentorleap Cohort",
+// //     initials: "JG",
+// //     color: "#1a56db",
+// //     bg: "#ebf5ff",
+// //     quote:
+// //       "I would like to thank Mridu Bhandari for coming up with this wonderful training to speak effectively! I loved the content discussed during the live classes and the exercises. Thanks for being a wonderful coach! Looking forward to meeting you in person!",
+// //   },
+// //   {
+// //     name: "Pravin Chaudhary",
+// //     role: "",
+// //     initials: "PC",
+// //     color: "#057a55",
+// //     bg: "#e3fbf6",
+// //     quote:
+// //       "It was a great session and I learned lots from everyone. If any one gets a chance to come to Ahmedabad, please ping me — we will have good lunch or dinner together with gujju style. You are most welcome with family!",
+// //   },
+// //   {
+// //     name: "Ajay Singh",
+// //     role: "Mentorleap Cohort",
+// //     initials: "AS",
+// //     color: "#9f580a",
+// //     bg: "#fffbeb",
+// //     quote:
+// //       "Thank you Mridu Ma'am! You gave me the opportunity to be part of this cohort. It was wonderful. I learnt many things which will help me go ahead in my business with more confidence.",
+// //   },
+// //   {
+// //     name: "Adhyuth",
+// //     role: "Mentorleap Cohort",
+// //     initials: "AD",
+// //     color: "#c81e1e",
+// //     bg: "#fff5f5",
+// //     quote:
+// //       "Thanks Mridu. Wonderful cohort this was! As promised, I will have my brother enroll soon for the next. May we all be the best version of us on stage.",
+// //   },
+// //   {
+// //     name: "Alice Ando",
+// //     role: "Senior HR Manager, Manila",
+// //     initials: "AA",
+// //     color: "#6c2bd9",
+// //     bg: "#f5f3ff",
+// //     quote:
+// //       "It is indeed a mentorship program. I had a great learning experience. Mridu made me feel comfortable and allowed me to be myself during practical exercises.",
+// //   },
+// //   {
+// //     name: "Laila Saleh",
+// //     role: "Associate Senior Manager, Jordan",
+// //     initials: "LS",
+// //     color: "#1a56db",
+// //     bg: "#ebf5ff",
+// //     quote:
+// //       "I really liked it and the programme will help you become more confident!",
+// //   },
+// //   {
+// //     name: "Abby Valles",
+// //     role: "Manager – Finance, Manila",
+// //     initials: "AV",
+// //     color: "#057a55",
+// //     bg: "#e3fbf6",
+// //     quote:
+// //       "It was a great program, and the content could make a difference in our day-to-day lives. I found it very interactive — hearing instructors' thoughts and tips is worth the value for money. I am happy I joined the session!",
+// //   },
+// //   {
+// //     name: "Ashish Koul",
+// //     role: "Senior Manager, Noida",
+// //     initials: "AK",
+// //     color: "#9f580a",
+// //     bg: "#fffbeb",
+// //     quote:
+// //       "I recently attended sessions in Mentorleap's Speak with Impact course and I confidently say it was a game changer for me. The mentor's approach was not only engaging but also tailored to meet individual needs. Kudos to Mentorleap for a fantastic learning experience! Highly recommended.",
+// //   },
+// //   {
+// //     name: "Riza Rosarial",
+// //     role: "Operations Manager – Recruitment, Manila",
+// //     initials: "RR",
+// //     color: "#c81e1e",
+// //     bg: "#fff5f5",
+// //     quote:
+// //       "It was a very good learning experience with other Managers and I would recommend other leaders to also go through the program. It was fun interacting with other participants and applying what we learned during class exercises.",
+// //   },
+// //   {
+// //     name: "Thet Rivera",
+// //     role: "Manager, Manila",
+// //     initials: "TR",
+// //     color: "#6c2bd9",
+// //     bg: "#f5f3ff",
+// //     quote:
+// //       "It was a good 8 sessions and I really enjoyed every course per session. I learned a lot and I know that it will definitely help me considering that I'm in the field of sales and business development.",
+// //   },
+// //   {
+// //     name: "Ma. Cecilia Amarille",
+// //     role: "Associate Manager, Manila",
+// //     initials: "MC",
+// //     color: "#1a56db",
+// //     bg: "#ebf5ff",
+// //     quote:
+// //       "I enjoyed the sessions with my colleagues and Mridu! Wish we have more of these! The next skill I want to learn is that of business writing!",
+// //   },
+// //   {
+// //     name: "Dima Talafha",
+// //     role: "Senior Manager, UAE",
+// //     initials: "DT",
+// //     color: "#057a55",
+// //     bg: "#e3fbf6",
+// //     quote:
+// //       "I would highly recommend the Mentorleap's Speak with Impact course to anyone who wants to improve their public speaking skills.",
+// //   },
+// // ];
+
+// // function TestimonialCard({
+// //   t,
+// //   index,
+// // }: {
+// //   t: (typeof testimonials)[0];
+// //   index: number;
+// // }) {
+// //   const ref = useRef<HTMLDivElement>(null);
+// //   const [visible, setVisible] = useState(false);
+
+// //   useEffect(() => {
+// //     const el = ref.current;
+// //     if (!el) return;
+// //     const obs = new IntersectionObserver(
+// //       ([entry]) => {
+// //         if (entry.isIntersecting) {
+// //           setVisible(true);
+// //           obs.disconnect();
+// //         }
+// //       },
+// //       { threshold: 0.1 }
+// //     );
+// //     obs.observe(el);
+// //     return () => obs.disconnect();
+// //   }, []);
+
+// //   return (
+// //     <div
+// //       ref={ref}
+// //       style={{
+// //         background: "#fff",
+// //         border: "1px solid #f0f0f0",
+// //         borderRadius: "16px",
+// //         padding: "1.5rem",
+// //         display: "flex",
+// //         flexDirection: "column",
+// //         gap: "1rem",
+// //         breakInside: "avoid",
+// //         marginBottom: "1rem",
+// //         opacity: visible ? 1 : 0,
+// //         transform: visible ? "translateY(0)" : "translateY(20px)",
+// //         transition: `opacity 0.5s ease ${index * 0.05}s, transform 0.5s ease ${index * 0.05}s`,
+// //         boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+// //       }}
+// //     >
+// //       {/* Quote mark */}
+// //       <svg width="24" height="18" viewBox="0 0 24 18" fill="none">
+// //         <path
+// //           d="M0 18V10.8C0 7.2 1.2 4.2 3.6 1.8L5.4 3.6C4.2 4.8 3.4 6.2 3 7.8H6V18H0ZM12 18V10.8C12 7.2 13.2 4.2 15.6 1.8L17.4 3.6C16.2 4.8 15.4 6.2 15 7.8H18V18H12Z"
+// //           fill={t.color}
+// //           opacity="0.25"
+// //         />
+// //       </svg>
+
+// //       <p
+// //         style={{
+// //           fontSize: "0.9375rem",
+// //           lineHeight: "1.75",
+// //           color: "#374151",
+// //           margin: 0,
+// //           flex: 1,
+// //         }}
+// //       >
+// //         {t.quote}
+// //       </p>
+
+// //       <div style={{ display: "flex", alignItems: "center", gap: "10px", paddingTop: "0.5rem", borderTop: "1px solid #f3f4f6" }}>
+// //         <div
+// //           style={{
+// //             width: "38px",
+// //             height: "38px",
+// //             borderRadius: "50%",
+// //             background: t.bg,
+// //             color: t.color,
+// //             display: "flex",
+// //             alignItems: "center",
+// //             justifyContent: "center",
+// //             fontSize: "12px",
+// //             fontWeight: 600,
+// //             flexShrink: 0,
+// //             letterSpacing: "0.5px",
+// //           }}
+// //         >
+// //           {t.initials}
+// //         </div>
+// //         <div>
+// //           <p style={{ margin: 0, fontWeight: 600, fontSize: "0.875rem", color: "#111827" }}>
+// //             {t.name}
+// //           </p>
+// //           {t.role && (
+// //             <p style={{ margin: 0, fontSize: "0.75rem", color: "#9ca3af" }}>
+// //               {t.role}
+// //             </p>
+// //           )}
+// //         </div>
+// //       </div>
+// //     </div>
+// //   );
+// // }
+
+// // export default function TestimonialsSection() {
+// //   const col1 = testimonials.filter((_, i) => i % 3 === 0);
+// //   const col2 = testimonials.filter((_, i) => i % 3 === 1);
+// //   const col3 = testimonials.filter((_, i) => i % 3 === 2);
+
+// //   return (
+// //     <section
+// //       style={{
+// //         padding: "5rem 1.5rem",
+// //         background: "#f9fafb",
+// //         fontFamily: "'DM Sans', sans-serif",
+// //       }}
+// //     >
+// //       {/* Google Font */}
+// //       <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');`}</style>
+
+// //       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+// //         {/* Header */}
+// //         <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
+// //           <p
+// //             style={{
+// //               fontSize: "0.8125rem",
+// //               fontWeight: 600,
+// //               letterSpacing: "0.12em",
+// //               textTransform: "uppercase",
+// //               color: "#1a56db",
+// //               marginBottom: "0.75rem",
+// //             }}
+// //           >
+// //             Real reviews · Real learners
+// //           </p>
+// //           <h2
+// //             style={{
+// //               fontSize: "clamp(1.75rem, 4vw, 2.75rem)",
+// //               fontWeight: 700,
+// //               color: "#111827",
+// //               margin: "0 0 1rem",
+// //               lineHeight: 1.2,
+// //             }}
+// //           >
+// //             Testimonials from past learners
+// //           </h2>
+// //           <p style={{ color: "#6b7280", fontSize: "1rem", maxWidth: "480px", margin: "0 auto" }}>
+// //             Hear directly from the professionals who've transformed their communication skills with Mentorleap.
+// //           </p>
+// //         </div>
+
+// //         {/* Masonry Grid — 3 cols */}
+// //         <div
+// //           style={{
+// //             display: "grid",
+// //             gridTemplateColumns: "repeat(3, 1fr)",
+// //             gap: "1rem",
+// //             alignItems: "start",
+// //           }}
+// //         >
+// //           <div>
+// //             {col1.map((t, i) => (
+// //               <TestimonialCard key={i} t={t} index={i * 3} />
+// //             ))}
+// //           </div>
+// //           <div>
+// //             {col2.map((t, i) => (
+// //               <TestimonialCard key={i} t={t} index={i * 3 + 1} />
+// //             ))}
+// //           </div>
+// //           <div>
+// //             {col3.map((t, i) => (
+// //               <TestimonialCard key={i} t={t} index={i * 3 + 2} />
+// //             ))}
+// //           </div>
+// //         </div>
+
+// //         {/* Stats bar */}
+// //         <div
+// //           style={{
+// //             marginTop: "3.5rem",
+// //             background: "#fff",
+// //             border: "1px solid #e5e7eb",
+// //             borderRadius: "16px",
+// //             padding: "2rem",
+// //             display: "grid",
+// //             gridTemplateColumns: "repeat(3, 1fr)",
+// //             gap: "1.5rem",
+// //             textAlign: "center",
+// //           }}
+// //         >
+// //           {[
+// //             { value: "17+", label: "Learner reviews" },
+// //             { value: "5+", label: "Countries represented" },
+// //             { value: "100%", label: "Would recommend" },
+// //           ].map((s, i) => (
+// //             <div key={i}>
+// //               <p
+// //                 style={{
+// //                   fontSize: "2rem",
+// //                   fontWeight: 700,
+// //                   color: "#111827",
+// //                   margin: "0 0 4px",
+// //                 }}
+// //               >
+// //                 {s.value}
+// //               </p>
+// //               <p style={{ fontSize: "0.875rem", color: "#9ca3af", margin: 0 }}>
+// //                 {s.label}
+// //               </p>
+// //             </div>
+// //           ))}
+// //         </div>
+// //       </div>
+// //     </section>
+// //   );
+// // }
+
+
+
+
 
 
 
@@ -359,114 +982,150 @@ const companies = [
   { name: "HSBC Bank", id: "hsbc", domain: "hsbc.com" },
   { name: "Sarita Handa", id: "saritahanda", domain: "saritahanda.com" },
   { name: "Ratan Textiles", id: "ratantextiles", domain: "ratantextiles.com" },
-  { name: "360 One Wealth", id: "360one", domain: "360.one" }
+  { name: "360 One Wealth", id: "360one", domain: "360.one" },
 ];
 
-// 20 realistic fallback reviews
+// Canonical review shape: use `text` and `initial` to match API response shape
 const STATIC_REVIEWS = [
   {
-    id: "r1", name: "Priya Sharma", location: "Mumbai, MH", stars: 5, initial: "P",
-    text: "Mridu's coaching completely transformed how I carry myself in interviews. I landed a role at Accenture within 3 weeks of the masterclass. The STAR framework she taught is gold.",
-    role: "Business Analyst, Accenture"
+    name: "Aarti Shroff",
+    role: "",
+    initial: "AS",
+    color: "#1a56db",
+    bg: "#ebf5ff",
+    text: "Thank you so much Mridu for your time and teaching. You have made a big difference in each one of our public speaking and we can see how well we have improved. Will definitely keep in touch and keep asking for your support often.",
   },
   {
-    id: "r2", name: "Arjun Mehta", location: "Bengaluru, KA", stars: 5, initial: "A",
-    text: "I'd been rejected 6 times before MentorLeap. After the communication bootcamp, I cracked my dream job at Microsoft. The way she breaks down salary negotiation alone is worth 10x the price.",
-    role: "Product Manager, Microsoft"
+    name: "Sujit Danait",
+    role: "",
+    initial: "SD",
+    color: "#057a55",
+    bg: "#e3fbf6",
+    text: "It was a great learning experience. Because of your step-by-step approach to effective public speaking, now it looks achievable. Effective communication is probably the single most important skill in life and I am sure these learnings will help all of us to do better in our lives.",
   },
   {
-    id: "r3", name: "Sneha Kapoor", location: "Delhi, DL", stars: 5, initial: "S",
-    text: "Genuinely the best investment I've made in my career. The mock interview sessions were brutally honest and that's exactly what I needed. Got my offer letter from Deloitte last month!",
-    role: "Senior Consultant, Deloitte"
+    name: "Paramesh Sarma",
+    role: "Senior Manager, Delhi/NCR",
+    initial: "PS",
+    color: "#9f580a",
+    bg: "#fffbeb",
+    text: "I had an amazing experience with Mentorleap's Public Speaking training. Mridu's guidance was excellent and her approach was engaging, making the program a wonderfully enriching experience. I feel more confident and prepared for speaking engagements. Highly recommended!",
   },
   {
-    id: "r4", name: "Rohan Verma", location: "Pune, MH", stars: 5, initial: "R",
-    text: "What sets MentorLeap apart is the personalised feedback. Mridu pinpointed exactly where I was losing interviewers — my filler words and lack of structure. Fixed both in 2 sessions.",
-    role: "Data Analyst, Wipro"
+    name: "Ruchi Halakhandi",
+    role: "",
+    initial: "RH",
+    color: "#c81e1e",
+    bg: "#fff5f5",
+    text: "Mridu, thank you for this excellent course. It's a very good mix of theory & practical as well as the feature of being able to track one's progress is quite useful. Thank you also to all the cohort mates. Made the classes all the more interactive & interesting.",
   },
   {
-    id: "r5", name: "Kavya Nair", location: "Hyderabad, TS", stars: 5, initial: "K",
-    text: "I was terrified of panel interviews. The confidence-building exercises and the way Mridu teaches you to own the room — honestly life-changing. Got 2 competing offers!",
-    role: "HR Business Partner, IBM"
+    name: "Leena Dayal",
+    role: "",
+    initial: "LD",
+    color: "#6c2bd9",
+    bg: "#f5f3ff",
+    text: "Thank you Mridu, for being a great mentor. Learning with you and under your guidance was a delight. Will surely stay in touch and be connected with you and all members of this group. Wishing you and all in group peace and comfort all your way!",
   },
   {
-    id: "r6", name: "Vikram Bose", location: "Kolkata, WB", stars: 5, initial: "V",
-    text: "The 'Interview to Offer Letter' masterclass is incredibly dense with value. Every minute is packed. I took 14 pages of notes and still felt like I missed things. Worth every rupee.",
-    role: "Finance Manager, EY"
+    name: "Jigar Gogri",
+    role: "Mentorleap Cohort",
+    initial: "JG",
+    color: "#1a56db",
+    bg: "#ebf5ff",
+    text: "I would like to thank Mridu Bhandari for coming up with this wonderful training to speak effectively! I loved the content discussed during the live classes and the exercises. Thanks for being a wonderful coach! Looking forward to meeting you in person!",
   },
   {
-    id: "r7", name: "Ananya Singh", location: "Chennai, TN", stars: 5, initial: "A",
-    text: "Mridu has a rare gift — she makes you feel like you already have the job. That mindset shift alone changed everything. My interviewers said I was the most confident candidate they'd seen.",
-    role: "Marketing Lead, Infosys"
+    name: "Pravin Chaudhary",
+    role: "",
+    initial: "PC",
+    color: "#057a55",
+    bg: "#e3fbf6",
+    text: "It was a great session and I learned lots from everyone. If any one gets a chance to come to Ahmedabad, please ping me — we will have good lunch or dinner together with gujju style. You are most welcome with family!",
   },
   {
-    id: "r8", name: "Karan Malhotra", location: "Gurugram, HR", stars: 5, initial: "K",
-    text: "Three failed interviews, zero confidence. After MentorLeap I passed 4 back-to-back. The articulation exercises are something I still practise daily even 6 months into my new role.",
-    role: "Strategy Consultant, PwC"
+    name: "Ajay Singh",
+    role: "Mentorleap Cohort",
+    initial: "AS",
+    color: "#9f580a",
+    bg: "#fffbeb",
+    text: "Thank you Mridu Ma'am! You gave me the opportunity to be part of this cohort. It was wonderful. I learnt many things which will help me go ahead in my business with more confidence.",
   },
   {
-    id: "r9", name: "Divya Reddy", location: "Ahmedabad, GJ", stars: 5, initial: "D",
-    text: "Highly recommend for anyone switching industries. I moved from engineering to finance and had no idea how to position myself. Mridu gave me a narrative that genuinely landed.",
-    role: "Investment Analyst, 360 One Wealth"
+    name: "Adhyuth",
+    role: "Mentorleap Cohort",
+    initial: "AD",
+    color: "#c81e1e",
+    bg: "#fff5f5",
+    text: "Thanks Mridu. Wonderful cohort this was! As promised, I will have my brother enroll soon for the next. May we all be the best version of us on stage.",
   },
   {
-    id: "r10", name: "Nikhil Joshi", location: "Nagpur, MH", stars: 5, initial: "N",
-    text: "The live Q&A was exceptional. Real, candid advice — not the generic 'be yourself' nonsense you find elsewhere. Walked out of my HSBC interview feeling like a completely different person.",
-    role: "Relationship Manager, HSBC"
+    name: "Alice Ando",
+    role: "Senior HR Manager, Manila",
+    initial: "AA",
+    color: "#6c2bd9",
+    bg: "#f5f3ff",
+    text: "It is indeed a mentorship program. I had a great learning experience. Mridu made me feel comfortable and allowed me to be myself during practical exercises.",
   },
   {
-    id: "r11", name: "Pooja Agarwal", location: "Jaipur, RJ", stars: 5, initial: "P",
-    text: "I attended as a fresher with zero corporate experience. Mridu made the process feel approachable. I got placed in my first attempt and my interviewer specifically complimented my communication.",
-    role: "Associate, Deloitte"
+    name: "Laila Saleh",
+    role: "Associate Senior Manager, Jordan",
+    initial: "LS",
+    color: "#1a56db",
+    bg: "#ebf5ff",
+    text: "I really liked it and the programme will help you become more confident!",
   },
   {
-    id: "r12", name: "Sameer Khan", location: "Lucknow, UP", stars: 5, initial: "S",
-    text: "The body language module is something I never thought mattered. Turns out it's half the battle. My manager told me I came across as 'exceptionally polished' compared to other candidates.",
-    role: "Operations Manager, Accenture"
+    name: "Abby Valles",
+    role: "Manager – Finance, Manila",
+    initial: "AV",
+    color: "#057a55",
+    bg: "#e3fbf6",
+    text: "It was a great program, and the content could make a difference in our day-to-day lives. I found it very interactive — hearing instructors' thoughts and tips is worth the value for money. I am happy I joined the session!",
   },
   {
-    id: "r13", name: "Ritika Desai", location: "Vadodara, GJ", stars: 5, initial: "R",
-    text: "Mridu's energy is infectious. The session never felt like a lecture — it felt like a conversation with someone who genuinely wants you to succeed. Cleared my final round at Microsoft!",
-    role: "UX Researcher, Microsoft"
+    name: "Ashish Koul",
+    role: "Senior Manager, Noida",
+    initial: "AK",
+    color: "#9f580a",
+    bg: "#fffbeb",
+    text: "I recently attended sessions in Mentorleap's Speak with Impact course and I confidently say it was a game changer for me. The mentor's approach was not only engaging but also tailored to meet individual needs. Kudos to Mentorleap for a fantastic learning experience! Highly recommended.",
   },
   {
-    id: "r14", name: "Aditya Pandey", location: "Bhopal, MP", stars: 5, initial: "A",
-    text: "I've attended 4 career workshops in the last year. MentorLeap is the only one where I saw real results within weeks. The frameworks are simple, memorable, and actually work under pressure.",
-    role: "Project Lead, Wipro"
+    name: "Riza Rosarial",
+    role: "Operations Manager – Recruitment, Manila",
+    initial: "RR",
+    color: "#c81e1e",
+    bg: "#fff5f5",
+    text: "It was a very good learning experience with other Managers and I would recommend other leaders to also go through the program. It was fun interacting with other participants and applying what we learned during class exercises.",
   },
   {
-    id: "r15", name: "Meera Pillai", location: "Kochi, KL", stars: 5, initial: "M",
-    text: "After a 2-year career gap, I was terrified of re-entering the workforce. Mridu's guidance on addressing gaps confidently and turning them into strengths helped me land a role above my previous level.",
-    role: "Senior Analyst, EY"
+    name: "Thet Rivera",
+    role: "Manager, Manila",
+    initial: "TR",
+    color: "#6c2bd9",
+    bg: "#f5f3ff",
+    text: "It was a good 8 sessions and I really enjoyed every course per session. I learned a lot and I know that it will definitely help me considering that I'm in the field of sales and business development.",
   },
   {
-    id: "r16", name: "Gaurav Tiwari", location: "Indore, MP", stars: 5, initial: "G",
-    text: "The way Mridu teaches you to tell your story is unlike anything else. I've been to MBA coaching, placement training — none of it compares to the depth here. Absolute must for serious job seekers.",
-    role: "Brand Manager, Infosys BPM"
+    name: "Ma. Cecilia Amarille",
+    role: "Associate Manager, Manila",
+    initial: "MC",
+    color: "#1a56db",
+    bg: "#ebf5ff",
+    text: "I enjoyed the sessions with my colleagues and Mridu! Wish we have more of these! The next skill I want to learn is that of business writing!",
   },
   {
-    id: "r17", name: "Ishita Roy", location: "Bhubaneswar, OD", stars: 5, initial: "I",
-    text: "Received an offer from my dream company 11 days after the masterclass. The preparation framework Mridu shares in the last 20 minutes alone made all the difference in my technical round.",
-    role: "Data Scientist, IBM"
-  },
-  {
-    id: "r18", name: "Rahul Srivastava", location: "Patna, BR", stars: 5, initial: "R",
-    text: "Cracked a 40% salary hike in my offer negotiation using exactly the script Mridu shared. My recruiter was surprised I knew how to counter. Worth it for that module alone.",
-    role: "Finance Analyst, PwC"
-  },
-  {
-    id: "r19", name: "Tanvi Kulkarni", location: "Nashik, MH", stars: 5, initial: "T",
-    text: "The group energy during the live session was electric. Everyone was so engaged. Mridu has a way of making complex communication concepts feel obvious in hindsight. Brilliant facilitator.",
-    role: "Communications Manager, Deloitte"
-  },
-  {
-    id: "r20", name: "Suresh Babu", location: "Coimbatore, TN", stars: 5, initial: "S",
-    text: "I was sceptical since I've attended many paid webinars that over-promised. MentorLeap massively over-delivered. Specific, actionable, and immediately usable. Got my offer letter the very next week.",
-    role: "Supply Chain Analyst, Accenture"
+    name: "Dima Talafha",
+    role: "Senior Manager, UAE",
+    initial: "DT",
+    color: "#057a55",
+    bg: "#e3fbf6",
+    text: "I would highly recommend the Mentorleap's Speak with Impact course to anyone who wants to improve their public speaking skills.",
   },
 ];
 
-function LogoRender({ name, id, heightClass }: { name: string, id: string, heightClass: string }) {
+function LogoRender({ name, id, heightClass }: { name: string; id: string; heightClass: string }) {
   const [error, setError] = useState(false);
 
   return (
@@ -515,7 +1174,6 @@ function RatingCounter({ visible, target = 4.9 }: { visible: boolean; target?: n
   return <>{val.toFixed(1)}</>;
 }
 
-// Split reviews into two rows for the dual marquee
 function splitIntoRows<T>(arr: T[]): [T[], T[]] {
   const mid = Math.ceil(arr.length / 2);
   return [arr.slice(0, mid), arr.slice(mid)];
@@ -531,9 +1189,9 @@ export default function ReviewsSection() {
   const [reviews, setReviews] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Re-enable this block when the API is ready and returns { initial, text, ... } shaped objects
   // useEffect(() => {
   //   fetchReviews().then((data: any[]) => {
-  //     // Merge API reviews with static ones, deduplicate by id
   //     const merged = [...STATIC_REVIEWS];
   //     data.forEach((r: any) => {
   //       if (!merged.find((s) => s.id === r.id)) merged.push(r);
@@ -547,16 +1205,17 @@ export default function ReviewsSection() {
   // }, []);
 
   useEffect(() => {
-  // Use only curated static reviews — ignore API data to prevent test/dummy entries showing
-  setReviews(STATIC_REVIEWS);
-  setLoading(false);
-}, []);
+    // Use only curated static reviews — ignore API data to prevent test/dummy entries showing
+    setReviews(STATIC_REVIEWS);
+    setLoading(false);
+  }, []);
 
   const [row1, row2] = splitIntoRows(reviews);
 
-  const averageRating = reviews.length > 0
-    ? (reviews.reduce((acc, r) => acc + (r.stars || 5), 0) / reviews.length).toFixed(1)
-    : "4.9";
+  const averageRating =
+    reviews.length > 0
+      ? (reviews.reduce((acc, r) => acc + (r.stars || 5), 0) / reviews.length).toFixed(1)
+      : "4.9";
 
   return (
     <>
@@ -581,7 +1240,6 @@ export default function ReviewsSection() {
         }
         .summary-animate { animation: summaryFadeUp 0.7s ease 0.3s both; }
 
-        /* Marquee rows */
         @keyframes marqueeLeft {
           0%   { transform: translateX(0); }
           100% { transform: translateX(-50%); }
@@ -614,7 +1272,6 @@ export default function ReviewsSection() {
           animation-play-state: paused;
         }
 
-        /* Review card */
         .review-card {
           flex-shrink: 0;
           width: 320px;
@@ -663,9 +1320,8 @@ export default function ReviewsSection() {
           transform: scale(1.1);
         }
 
-        /* Companies marquee */
         @keyframes marqueeX {
-          0% { transform: translateX(0); }
+          0%   { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
         .marquee-container {
@@ -805,7 +1461,7 @@ export default function ReviewsSection() {
           <div className="text-[#94a3b8] animate-pulse py-20">Loading reviews...</div>
         )}
 
-        {/* WHERE OUR LEARNERS WORK (COMPANIES) */}
+        {/* WHERE OUR LEARNERS WORK */}
         <div className="mt-28 px-5" style={{ opacity: visible ? 1 : 0, transition: "opacity 0.8s ease 0.4s" }}>
           <h3 className="text-[#94a3b8] text-xs font-black uppercase tracking-[0.3em] mb-10">
             Our Learners Work At

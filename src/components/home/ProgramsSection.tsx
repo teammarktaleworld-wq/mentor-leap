@@ -415,7 +415,7 @@ export default function ProgramsSection() {
                     position: "absolute",
                   }}
                 >
-                  BEST SELLER
+                  UPCOMING EVENT
                 </div>
                 {event.price === 0 && (
                   <div
