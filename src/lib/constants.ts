@@ -7,7 +7,7 @@ export const BRAND = {
 };
 
 export const ADMIN_CONFIG = {
-    superAdminEmails: ["admin@mentorleap.com", "mridubhandari@mentorleap.com","adminabhi@mentorleap.com"],
+    superAdminEmails: ["admin@mentorleap.com", "adminmridu@mentorleap.com","adminabhi@mentorleap.com"],
 };
 
 export const AI_CONFIG = {
