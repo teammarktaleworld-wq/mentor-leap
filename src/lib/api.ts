@@ -81,44 +81,71 @@ export async function fetchCourseData() {
 //   }
 // }
 
+// export async function fetchBlogs() {
+//   try {
+//     const q = query(collection(db, "blogs"));
+//     const snapshot = await getDocs(q);
+
+//     const blogs = snapshot.docs.map(doc => ({
+//       id: doc.id,
+//       ...doc.data(),
+//     }));
+
+//     console.log("Fetched blogs:", blogs); // 👈 ADD THIS
+
+//     return blogs;
+//   } catch (error) {
+//     console.error("Firestore fetch error:", error);
+//     return [];
+//   }
+// }
+
+// export async function fetchBlogById(id: string) {
+//   try {
+//     const { doc, getDoc } = await import("firebase/firestore");
+//     const docRef = doc(db, "blogs", id);
+//     const docSnap = await getDoc(docRef);
+
+//     if (docSnap.exists()) {
+//       const blog = { id: docSnap.id, ...docSnap.data() };
+//       console.log("Fetched blog:", blog); // 👈 ADD THIS
+//       return blog;
+//     }
+
+//     console.log("No blog found for ID:", id); // 👈 ADD THIS
+//     return null;
+//   } catch (error) {
+//     console.error("Firestore fetch error:", error);
+//     return null;
+//   }
+// }
+
 export async function fetchBlogs() {
   try {
-    const q = query(collection(db, "blogs"));
-    const snapshot = await getDocs(q);
-
-    const blogs = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    console.log("Fetched blogs:", blogs); // 👈 ADD THIS
-
+    const res = await fetch("/api/blogs");
+    if (!res.ok) throw new Error(`Failed to fetch blogs: ${res.status}`);
+    const blogs = await res.json();
+    console.log("[fetchBlogs] Fetched blogs:", blogs);
     return blogs;
   } catch (error) {
-    console.error("Firestore fetch error:", error);
+    console.error("[fetchBlogs] Error:", error);
     return [];
   }
 }
 
 export async function fetchBlogById(id: string) {
   try {
-    const { doc, getDoc } = await import("firebase/firestore");
-    const docRef = doc(db, "blogs", id);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      const blog = { id: docSnap.id, ...docSnap.data() };
-      console.log("Fetched blog:", blog); // 👈 ADD THIS
-      return blog;
-    }
-
-    console.log("No blog found for ID:", id); // 👈 ADD THIS
-    return null;
+    const res = await fetch(`/api/blogs/${id}`);
+    if (!res.ok) throw new Error(`Failed to fetch blog: ${res.status}`);
+    const blog = await res.json();
+    console.log("[fetchBlogById] Fetched blog:", blog);
+    return blog;
   } catch (error) {
-    console.error("Firestore fetch error:", error);
+    console.error("[fetchBlogById] Error:", error);
     return null;
   }
 }
+
 
 export async function fetchReviews() {
   try {

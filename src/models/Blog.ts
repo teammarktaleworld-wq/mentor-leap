@@ -1,3 +1,6 @@
+//models/Blog.ts
+
+
 import { admin } from "@/lib/firebaseAdmin";
 
 export interface Blog {

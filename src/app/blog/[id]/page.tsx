@@ -117,7 +117,7 @@ export default function BlogPostPage() {
                 <Reveal>
                     <div className="text-[#00e5ff] text-sm font-black uppercase tracking-[0.2em] mb-4 text-center">{blog.category || 'Strategic Insight'}</div>
                     <h1 className="text-4xl md:text-6xl font-black mb-8 text-center leading-[1.1] tracking-tight">{blog.title}</h1>
-                    
+
                     <div className="flex flex-wrap items-center justify-center gap-y-4 gap-x-8 mb-16 text-[10px] sm:text-xs text-[#475569] font-black uppercase tracking-widest border-y border-white/5 py-6">
                         <div className="flex items-center gap-2">
                             <User size={14} className="text-[#00e5ff]" />
@@ -140,7 +140,7 @@ export default function BlogPostPage() {
                             <img src={blog.image} className="w-full h-full object-cover" alt={blog.title} />
                         </div>
                     )}
-                    
+
                     <div
                         className="blog-content max-w-none"
                         dangerouslySetInnerHTML={{ __html: formatContent(blog.content) }}
@@ -148,11 +148,38 @@ export default function BlogPostPage() {
                 </Reveal>
 
                 {/* CTAs or Footer for Blog */}
-                <div className="mt-24 p-12 rounded-[40px] bg-white/[0.02] border border-white/10 text-center relative overflow-hidden group">
+                {/* <div className="mt-24 p-12 rounded-[40px] bg-white/[0.02] border border-white/10 text-center relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-[#00e5ff05] blur-3xl -mr-32 -mt-32 rounded-full"></div>
                     <h3 className="text-2xl font-black text-white mb-4 relative z-10 tracking-tight">Ready to master your communication?</h3>
                     <p className="text-[#64748b] mb-8 relative z-10 max-w-xl mx-auto italic text-lg leading-relaxed">Join my upcoming immersive bootcamp and transform the way you speak, influence, and lead.</p>
-                    <Link href="/events/speak-with-impact-bootcamp">
+                    <Link href="/events/interview-to-offer-letter">
+                        <button className="px-10 py-5 bg-[#00e5ff] text-black font-black uppercase tracking-[0.2em] text-xs rounded-full hover:bg-white hover:scale-105 transition-all shadow-[0_20px_40px_rgba(0,229,255,0.2)] relative z-10">
+                            Secure Your Seat
+                        </button>
+                    </Link>
+                </div> */}
+
+                {/* CTAs or Footer for Blog */}
+                <div className="mt-24 p-12 rounded-[40px] bg-white/[0.02] border border-white/10 text-center relative overflow-hidden group">
+
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-[#00e5ff05] blur-3xl -mr-32 -mt-32 rounded-full"></div>
+
+                    <h3 className="text-2xl font-black text-white mb-4 relative z-10 tracking-tight">
+                        From Interview to Offer Letter — Are You Ready?
+                    </h3>
+
+                    <p className="text-[#64748b] mb-6 relative z-10 max-w-xl mx-auto italic text-lg leading-relaxed">
+                        Master the art of answering interview questions with clarity, structure, and confidence. Learn exactly what top recruiters expect — and how to stand out in every round.
+                    </p>
+
+                    <div className="text-sm text-[#94a3b8] mb-8 space-y-1 relative z-10">
+                        <p>✔ Freshers aiming for their first job</p>
+                        <p>✔ Career switchers preparing for new roles</p>
+                        <p>✔ Tech professionals mastering behavioral interviews</p>
+                        <p>✔ Students who want a competitive edge</p>
+                    </div>
+
+                    <Link href="/events/interview-to-offer-letter">
                         <button className="px-10 py-5 bg-[#00e5ff] text-black font-black uppercase tracking-[0.2em] text-xs rounded-full hover:bg-white hover:scale-105 transition-all shadow-[0_20px_40px_rgba(0,229,255,0.2)] relative z-10">
                             Secure Your Seat
                         </button>
