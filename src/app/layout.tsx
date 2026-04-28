@@ -48,41 +48,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        {/* Google Analytics 4 */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFRWG8FSCC"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-DFRWG8FSCC');
-            `,
-          }}
-        />
-        {/* Organization Schema Markup */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "MentorLeap",
-              "url": "https://www.mentorleap.co",
-              "description": "Leadership training and executive coaching for professionals",
-              "founder": "Mridu Bhandari",
-              "sameAs": [
-                "https://facebook.com/mentorleap",
-                "https://twitter.com/mentorleap",
-                "https://instagram.com/mentorleap",
-                "https://linkedin.com/company/mentorleap",
-                "https://youtube.com/@mentorleap"
-              ]
-            })
-          }}
-        />
-      </head>
+     <head>
+  {/* Google Analytics 4 */}
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-65RPVGPX3R"></script>
+  <script
+    dangerouslySetInnerHTML={{
+      __html: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-65RPVGPX3R');
+      `,
+    }}
+  />
+</head>
       <body
         className={inter.className}
         suppressHydrationWarning
