@@ -167,7 +167,7 @@ export default function VisionFounder() {
             >
               <div className="img-glow" />
               <Image
-                src={info.image || "https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/MG_4654.jpg"}
+                src={info.image || "c:\Users\apati\Downloads\MG_4654.jpg"}
                 alt={info.name || "Mridu Bhandari"}
                 width={600}
                 height={700}

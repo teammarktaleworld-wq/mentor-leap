@@ -74,7 +74,7 @@ export default function VisionFounder() {
 
   const info = founderInfo || {
     name: "Mridu Bhandari",
-    image: "https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/MG_4654.jpg",
+    image:  "/images/MG_4654.jpg",
     tagline: "Transforming professionals into confident communicators and strategic leaders.",
     bio: [
       "After moderating hundreds of leadership forums and corporate conversations, Mridu Bhandari observed a recurring challenge among professionals. Many individuals possess knowledge and expertise but struggle to communicate ideas with clarity, structure and confidence.",
@@ -167,7 +167,7 @@ export default function VisionFounder() {
             >
               <div className="img-glow" />
               <Image
-                src={info.image || "https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/MG_4654.jpg"}
+                src={info.image || "/images/MG_4654.jpg"}
                 alt={info.name || "Mridu Bhandari"}
                 width={600}
                 height={700}

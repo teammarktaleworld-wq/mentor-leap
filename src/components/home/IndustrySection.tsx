@@ -6,29 +6,52 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/ui/Animation";
 
+// const cards = [
+//   {
+//     img: "https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/Delltechforum2.jpeg",
+//     title: "Global Leadership Forums",
+//     desc: "Moderating discussions with business leaders and industry innovators.",
+//   },
+//   {
+//     img: "https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/TVAnchorin.jpeg",
+//     title: "Media & Broadcast Hosting",
+//     desc: "Professional moderator and anchor for high-profile leadership conversations.",
+//   },
+//   {
+//     img: "https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/WhatsAppImage2024-04-05at7.30.09PM.jpeg",
+//     title: "Corporate Leadership Events",
+//     desc: "Hosting impactful leadership events for corporate organizations.",
+//   },
+//   {
+//     img: "https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/IMG_0380.jpg",
+//     title: "Global Conference Moderation",
+//     desc: "Facilitating conversations between leaders shaping the future.",
+//   },
+// ];
+
+
 const cards = [
   {
-    img: "https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/Delltechforum2.jpeg",
+    img: "/images/Delltechforum2.jpeg",
     title: "Global Leadership Forums",
     desc: "Moderating discussions with business leaders and industry innovators.",
   },
   {
-    img: "https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/TVAnchorin.jpeg",
+    img: "/images/TVAnchorin.jpeg",
     title: "Media & Broadcast Hosting",
     desc: "Professional moderator and anchor for high-profile leadership conversations.",
   },
   {
-    img: "https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/WhatsAppImage2024-04-05at7.30.09PM.jpeg",
+    img: "/images/WhatsAppImage2024-04-05at7.30.09PM.jpeg",
     title: "Corporate Leadership Events",
     desc: "Hosting impactful leadership events for corporate organizations.",
   },
   {
-    img: "https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/IMG_0380.jpg",
+    img: "/images/IMG_0380.jpg",
     title: "Global Conference Moderation",
     desc: "Facilitating conversations between leaders shaping the future.",
   },
 ];
-
 function useInView(threshold = 0.1) {
   const ref = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
