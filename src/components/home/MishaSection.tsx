@@ -177,8 +177,7 @@ export default function MishaSection() {
             <div className="misha-hologram" />
             <div className="misha-hologram-ring" />
             <Image
-              src="https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/ChatGPT-Image-Mar-4-2026-06_35_38-PM.png"
-              alt="MISHA AI"
+              src="/images/ChatGPT-Image-Mar-4-2026-06_35_38-PM.png" alt="MISHA AI"
               width={320}
               height={380}
               className="misha-img relative"
