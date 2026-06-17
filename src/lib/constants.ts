@@ -3,7 +3,8 @@ export const BRAND = {
     founder: "Mridu Bhandari",
     supportEmail: "hello@mentorleap.co",
     mainUrl: "https://mentorleap.com",
-    logoUrl: "https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/Logo.svg",
+    logoUrl: "/images",
+    // logoUrl: "https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/Logo.svg",
 };
 
 export const ADMIN_CONFIG = {

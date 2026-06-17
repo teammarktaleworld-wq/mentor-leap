@@ -60,7 +60,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <div className="p-8 flex items-center justify-between">
                     <Link href="/dashboard" className="block" onClick={onClose}>
                         <img
-                            src="https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/WhatsApp-Image-2026-02-26-at-6.16.25-AM.jpeg"
+                            src="public/images/WhatsApp-Image-2026-02-26-at-6.16.25-AM (2).jpeg"
                             alt="MentorLeap"
                             className="h-10 w-auto object-contain"
                         />

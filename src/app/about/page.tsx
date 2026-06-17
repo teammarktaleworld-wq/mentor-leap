@@ -22,7 +22,7 @@ export default function AboutPage() {
           <Reveal>
             <div className="relative aspect-square rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
               <Image 
-                src="https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/WhatsApp-Image-2026-02-26-at-6.16.25-AM.jpeg" 
+                src="public/images/WhatsApp-Image-2026-02-26-at-6.16.25-AM.jpeg" 
                 alt="Founder" 
                 fill 
                 className="object-cover"

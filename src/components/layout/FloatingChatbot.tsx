@@ -465,6 +465,16 @@
 // }
 
 
+
+
+
+
+
+
+
+
+
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -481,20 +491,20 @@ interface Message {
 
 const SUGGESTIONS = [
   { label: "🎤 Interview to Offer", prompt: "Tell me about the Interview to Offer Letter masterclass on 30th April" },
-  { label: "Live Events",           prompt: "What live events are coming up?" },
-  { label: "Premium Courses",       prompt: "Premium Courses" },
-  { label: "Executive Coaching",    prompt: "Executive Coaching" },
-  { label: "Corporate Training",    prompt: "Corporate Training" },
+  { label: "Live Events", prompt: "What live events are coming up?" },
+  { label: "Premium Courses", prompt: "Premium Courses" },
+  { label: "Executive Coaching", prompt: "Executive Coaching" },
+  { label: "Corporate Training", prompt: "Corporate Training" },
 ];
 
 const EVENT = {
-  tag:           "Communication Masterclass",
-  title:         "Interview to Offer Letter",
-  date:          "Thursday, 30th April 2026",
-  time:          "7:30 PM – 9:00 PM IST",
-  price:         "₹499",
+  tag: "Communication Masterclass",
+  title: "Interview to Offer Letter",
+  date: "Thursday, 30th April 2026",
+  time: "7:30 PM – 9:00 PM IST",
+  price: "₹499",
   originalPrice: "₹1999",
-  link:          "/events/interview-to-offer-letter",
+  link: "/events/interview-to-offer-letter",
 };
 
 // Injected into every API call so MISHA has full accurate event knowledge
@@ -535,17 +545,17 @@ const GREETING: Message = {
 const EVENT_MSG: Message = { role: "bot", text: "", isEvent: true };
 
 export default function FloatingChatbot() {
-  const [open, setOpen]                     = useState(false);
-  const [messages, setMessages]             = useState<Message[]>([]);
-  const [input, setInput]                   = useState("");
-  const [greetingDone, setGreetingDone]     = useState(false);
-  const [typedGreeting, setTypedGreeting]   = useState("");
-  const [chatVisible, setChatVisible]       = useState(false);
-  const [isTyping, setIsTyping]             = useState(false);
-  const [showBadge, setShowBadge]           = useState(true);
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const [greetingDone, setGreetingDone] = useState(false);
+  const [typedGreeting, setTypedGreeting] = useState("");
+  const [chatVisible, setChatVisible] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const [showBadge, setShowBadge] = useState(true);
 
   const { user, loading: authLoading } = useAuth();
-  const bodyRef  = useRef<HTMLDivElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // greeting typewriter on first open
@@ -885,7 +895,7 @@ export default function FloatingChatbot() {
           >
             <div style={{ width: "36px", height: "36px", borderRadius: "50%", overflow: "hidden", border: "2px solid rgba(0,229,255,0.4)", flexShrink: 0 }}>
               <Image
-                src="https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/ChatGPT-Image-Mar-4-2026-06_28_34-PM.png"
+                src="/images/ChatGPT-Image-Mar-4-2026-06_28_34-PM.png"
                 alt="MISHA"
                 width={36}
                 height={36}
@@ -1010,11 +1020,10 @@ export default function FloatingChatbot() {
           style={{ position: "relative", width: "70px", height: "70px", borderRadius: "50%", background: "linear-gradient(135deg,#00e5ff,#6366f1)", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
         >
           <Image
-            src="https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/ChatGPT-Image-Mar-4-2026-06_28_34-PM.png"
+            src="/images/ChatGPT-Image-Mar-4-2026-06_28_34-PM.png"
             alt="MISHA"
-            width={44}
-            height={44}
-            style={{ borderRadius: "50%", objectFit: "cover" }}
+            width={36}
+            height={36}
           />
           {!open && showBadge && <div className="misha-fab-badge">1</div>}
         </button>

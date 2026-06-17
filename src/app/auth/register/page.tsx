@@ -83,7 +83,7 @@ export default function SignupPage() {
           <div className="flex justify-center mb-10">
             <Link href="/">
               <Image
-                src="https://marktaleevents.com/mentorleap/wp-content/uploads/2026/03/WhatsApp-Image-2026-02-26-at-6.16.25-AM.jpeg"
+                src="public/images/WhatsApp-Image-2026-02-26-at-6.16.25-AM.jpeg"
                 alt="MentorLeap"
                 width={160}
                 height={56}
