@@ -12,8 +12,7 @@ export const ADMIN_CONFIG = {
 };
 
 export const AI_CONFIG = {
-    model: "llama-3.3-70b-versatile",
-    systemPrompt: `You are MISHA, MentorLeap's proprietary AI leadership engine. 
+ model: "openai/gpt-oss-120b",    systemPrompt: `You are MISHA, MentorLeap's proprietary AI leadership engine. 
     Founder: Mridu Bhandari.
     Philosophy: M-I-S-H-A (Master, Increase, Strengthen, Humanise, Accelerate).`,
 };
