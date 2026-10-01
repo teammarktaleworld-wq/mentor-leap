@@ -62,7 +62,7 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                 <div className="p-8 flex items-center justify-between">
                     <Link href="/admin" className="flex items-center gap-3" onClick={handleClose}>
                         <img
-                            src="public/images/WhatsApp-Image-2026-02-26-at-6.16.25-AM (2).jpeg"
+                            src="/images/Logomentorlesp.png"
                             alt="MentorLeap"
                             className="h-8 w-auto object-contain"
                         />
