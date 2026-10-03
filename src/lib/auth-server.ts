@@ -57,8 +57,27 @@ export async function verifyUser(req: NextRequest, targetUid?: string) {
 
     return decodedToken;
 }
+// export async function isAdmin(email: string) {
+//     if (!email) return false;
+//     const superAdmins = ADMIN_CONFIG.superAdminEmails || [];
+//     return superAdmins.includes(email.toLowerCase());
+// }
+
+
+
+
+
+
+
+
 export async function isAdmin(email: string) {
     if (!email) return false;
-    const superAdmins = ADMIN_CONFIG.superAdminEmails || [];
-    return superAdmins.includes(email.toLowerCase());
+
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const superAdmins = (ADMIN_CONFIG.superAdminEmails || []).map(
+        (adminEmail) => adminEmail.trim().toLowerCase()
+    );
+
+    return superAdmins.includes(normalizedEmail);
 }

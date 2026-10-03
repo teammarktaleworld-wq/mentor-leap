@@ -1,57 +1,332 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
-import { verifyUser, isAdmin } from "@/lib/auth-server";
+import { verifyAdmin } from "@/lib/auth-server";
+import { QueryDocumentSnapshot } from "firebase-admin/firestore";
 
 export async function GET(req: NextRequest) {
     try {
-        const decodedToken = await verifyUser(req);
-        if (!(await isAdmin(decodedToken.email!))) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-        }
+        // =========================================
+        // 1. VERIFY ADMIN
+        // =========================================
+        const decodedToken = await verifyAdmin(req);
 
-        const snapshot = await db.collection("transactions")
-            .orderBy("createdAt", "desc")
-            .limit(100)
+        console.log(
+            `[Admin Registrations] Authorized admin: ${decodedToken.email} (${decodedToken.uid})`
+        );
+
+        // =========================================
+        // 2. FETCH ALL TRANSACTIONS
+        //
+        // No .where()
+        // No .orderBy()
+        //
+        // Therefore NO composite Firestore index
+        // is required.
+        // =========================================
+        const snapshot = await db
+            .collection("transactions")
             .get();
 
-        const transactions = snapshot.docs.map((doc: any) => ({
-            id: doc.id,
-            ...doc.data(),
-            createdAt: doc.data().createdAt?.toDate()?.toISOString()
-        }));
+        // =========================================
+        // 3. CONVERT FIRESTORE DOCUMENTS
+        // =========================================
+        const allTransactions = snapshot.docs.map(
+            (doc: QueryDocumentSnapshot) => {
+                const data = doc.data();
 
-        // Enrich with user data if missing
-        const enrichedRegistrations = await Promise.all(transactions.map(async (reg: any) => {
-            if (reg.userDetails && reg.userDetails.fullName && reg.userDetails.email) {
-                return reg;
+                return {
+                    id: doc.id,
+                    ...data,
+
+                    createdAt: data.createdAt?.toDate
+                        ? data.createdAt.toDate().toISOString()
+                        : data.createdAt || null,
+                };
             }
+        );
 
-            // If transaction doesn't have details, check the users collection
-            try {
-                const userDoc = await db.collection("users").doc(reg.userId).get();
-                if (userDoc.exists) {
-                    const userData = userDoc.data()!;
-                    const profile = userData.profileDetails || {};
-                    return {
-                        ...reg,
-                        userDetails: {
-                            fullName: profile.fullName || userData.displayName || "Unknown User",
-                            email: profile.email || userData.email || "No Email",
-                            phone: profile.phone || "No Phone",
-                            ...profile
+        // =========================================
+        // 4. ONLY EVENT TRANSACTIONS
+        // =========================================
+        const eventTransactions = allTransactions.filter(
+            (transaction: any) =>
+                transaction.itemType === "event"
+        );
+
+        // =========================================
+        // 5. SORT NEWEST → OLDEST
+        // =========================================
+        eventTransactions.sort(
+            (a: any, b: any) => {
+                const dateA = a.createdAt
+                    ? new Date(a.createdAt).getTime()
+                    : 0;
+
+                const dateB = b.createdAt
+                    ? new Date(b.createdAt).getTime()
+                    : 0;
+
+                return dateB - dateA;
+            }
+        );
+
+        // =========================================
+        // 6. ENRICH REGISTRATIONS WITH USER DATA
+        // =========================================
+        const enrichedRegistrations =
+            await Promise.all(
+                eventTransactions.map(
+                    async (registration: any) => {
+                        try {
+                            // ---------------------------------
+                            // Transaction already contains
+                            // complete user details
+                            // ---------------------------------
+                            if (
+                                registration.userDetails?.fullName &&
+                                registration.userDetails?.email
+                            ) {
+                                return registration;
+                            }
+
+                            // ---------------------------------
+                            // No user ID
+                            // ---------------------------------
+                            if (!registration.userId) {
+                                return {
+                                    ...registration,
+
+                                    userDetails: {
+                                        fullName:
+                                            registration
+                                                .userDetails
+                                                ?.fullName ||
+                                            "Guest User",
+
+                                        email:
+                                            registration
+                                                .userDetails
+                                                ?.email ||
+                                            "No Email",
+
+                                        phone:
+                                            registration
+                                                .userDetails
+                                                ?.phone ||
+                                            "No Phone",
+                                    },
+                                };
+                            }
+
+                            // ---------------------------------
+                            // Fetch user document
+                            // ---------------------------------
+                            const userDoc = await db
+                                .collection("users")
+                                .doc(registration.userId)
+                                .get();
+
+                            // ---------------------------------
+                            // User doesn't exist
+                            // ---------------------------------
+                            if (!userDoc.exists) {
+                                return {
+                                    ...registration,
+
+                                    userDetails: {
+                                        fullName:
+                                            registration
+                                                .userDetails
+                                                ?.fullName ||
+                                            "Guest User",
+
+                                        email:
+                                            registration
+                                                .userDetails
+                                                ?.email ||
+                                            "No Email",
+
+                                        phone:
+                                            registration
+                                                .userDetails
+                                                ?.phone ||
+                                            "No Phone",
+                                    },
+                                };
+                            }
+
+                            // ---------------------------------
+                            // User exists
+                            // ---------------------------------
+                            const userData =
+                                userDoc.data() || {};
+
+                            const profile =
+                                userData.profileDetails || {};
+
+                            return {
+                                ...registration,
+
+                                userDetails: {
+                                    fullName:
+                                        registration
+                                            .userDetails
+                                            ?.fullName ||
+                                        profile.fullName ||
+                                        userData.displayName ||
+                                        "Unknown User",
+
+                                    email:
+                                        registration
+                                            .userDetails
+                                            ?.email ||
+                                        profile.email ||
+                                        userData.email ||
+                                        "No Email",
+
+                                    phone:
+                                        registration
+                                            .userDetails
+                                            ?.phone ||
+                                        profile.phone ||
+                                        userData.phone ||
+                                        "No Phone",
+
+                                    ...profile,
+                                },
+                            };
+                        } catch (error) {
+                            console.error(
+                                `Failed to enrich registration ${registration.id}:`,
+                                error
+                            );
+
+                            return registration;
                         }
-                    };
-                }
-            } catch (err) {
-                console.error("Enrichment error:", err);
+                    }
+                )
+            );
+
+        // =========================================
+        // 7. EVENT TITLES
+        // =========================================
+        const eventTitles: Record<string, string> = {
+            "speak-with-impact-bootcamp":
+                "Speak With Impact Bootcamp",
+
+            "interview-to-offer-letter":
+                "Interview to Offer Letter",
+
+            "smart-but-overlooked":
+                "Smart But Overlooked: The Executive Presence Masterclass",
+        };
+
+        // =========================================
+        // 8. FORMAT FINAL RESPONSE
+        // =========================================
+        const result = enrichedRegistrations.map(
+            (registration: any) => {
+                return {
+                    ...registration,
+
+                    // Friendly event title
+                    itemTitle:
+                        eventTitles[
+                            registration.itemId
+                        ] ||
+                        registration.itemId
+                            ?.split("-")
+                            .map(
+                                (word: string) =>
+                                    word
+                                        .charAt(0)
+                                        .toUpperCase() +
+                                    word.slice(1)
+                            )
+                            .join(" ") ||
+                        "Unknown Event",
+
+                    // Coupon
+                    couponCode:
+                        registration.userDetails
+                            ?.couponCode ||
+                        registration.couponCode ||
+                        null,
+
+                    // Amount
+                    amount: Number(
+                        registration.amount || 0
+                    ),
+
+                    // Payment status
+                    paymentStatus:
+                        registration.paymentStatus ||
+                        "unknown",
+
+                    // Payment gateway
+                    paymentGateway:
+                        registration.paymentGateway ||
+                        "generic",
+                };
             }
-            return reg;
-        }));
+        );
 
-        return NextResponse.json(enrichedRegistrations);
+        // =========================================
+        // 9. LOG RESULT
+        // =========================================
+        console.log(
+            `[Admin Registrations] Found ${result.length} event registrations`
+        );
 
+        // =========================================
+        // 10. RETURN RESPONSE
+        // =========================================
+        return NextResponse.json(result, {
+            status: 200,
+        });
     } catch (error: any) {
-        console.error("Fetch Registrations Error:", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        // =========================================
+        // ERROR HANDLING
+        // =========================================
+        console.error(
+            "Fetch Registrations Error:",
+            error
+        );
+
+        const message =
+            error?.message ||
+            "Failed to fetch registrations";
+
+        // Authentication / authorization errors
+        if (
+            message
+                .toLowerCase()
+                .includes("unauthorized") ||
+            message
+                .toLowerCase()
+                .includes("forbidden") ||
+            message
+                .toLowerCase()
+                .includes("admin access required")
+        ) {
+            return NextResponse.json(
+                {
+                    error: message,
+                },
+                {
+                    status: 403,
+                }
+            );
+        }
+
+        // Other server errors
+        return NextResponse.json(
+            {
+                error: message,
+            },
+            {
+                status: 500,
+            }
+        );
     }
 }
