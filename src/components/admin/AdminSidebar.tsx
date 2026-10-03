@@ -63,7 +63,7 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                     <Link href="/admin" className="flex items-center gap-3" onClick={handleClose}>
                         <img
                             src="/images/Logomentorlesp.png"
-                            alt="MentorLeap"
+                            alt="MentorLeapdfdfd"
                             className="h-8 w-auto object-contain"
                         />
                         <span className="text-[10px] font-bold bg-[#00e5ff] text-black px-1.5 py-0.5 rounded uppercase tracking-tighter">Admin</span>

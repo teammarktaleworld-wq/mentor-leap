@@ -1,195 +1,209 @@
 
 
+// // mentor-leap\src\app\api\checkout\route.ts
 
 
 
-// // import { NextRequest, NextResponse } from "next/server";
-// // import { db, admin } from "@/lib/firebaseAdmin";
-// // import { verifyUser } from "@/lib/auth-server";
-// // import { razorpay } from "@/lib/razorpay";
-// // import { MailService } from "@/lib/mail";
 
-// // type CouponDiscountRule = (basePrice: number) => number;
+// import { NextRequest, NextResponse } from "next/server";
+// import { db, admin } from "@/lib/firebaseAdmin";
+// import { verifyUser } from "@/lib/auth-server";
+// import { razorpay } from "@/lib/razorpay";
+// import { MailService } from "@/lib/mail";
 
-// // const COUPON_RULES: Record<string, Record<string, CouponDiscountRule>> = {
-// //     "speak-with-impact-bootcamp": {
-// //         FAMILYFREE: () => 0,
-// //         MENTORFREE: () => 0,
-// //         "CORP100%": () => 0,
-// //         EARLYBIRD: (basePrice) => Math.round(basePrice * 0.75),
-// //         TEAM: (basePrice) => Math.round(basePrice * 0.5)
-// //     },
-// //     "interview-to-offer-letter": {
-// //         MASTERCLASSFREE: () => 0,
-// //         "CORP100%": () => 0,
-// //         EARLYBIRD: (basePrice) => Math.round(basePrice * 0.75),
-// //         TEAM: (basePrice) => Math.round(basePrice * 0.5),
-// //         OFFER199: () => 199   // ← ₹199 flat price
-// //     }
-// // };
+// type CouponDiscountRule = (basePrice: number) => number;
 
-// // function normalizeCouponCode(value: unknown): string {
-// //     if (typeof value !== "string") return "";
-// //     return value.trim().toUpperCase().split(/\s*-\s*/)[0].trim();
-// // }
+// const COUPON_RULES: Record<string, Record<string, CouponDiscountRule>> = {
+//     "speak-with-impact-bootcamp": {
+//         FAMILYFREE: () => 0,
+//         MENTORFREE: () => 0,
+//         "CORP100%": () => 0,
+//         EARLYBIRD: (basePrice) => Math.round(basePrice * 0.75),
+//         TEAM: (basePrice) => Math.round(basePrice * 0.5)
+//     },
+//     "interview-to-offer-letter": {
+//         MASTERCLASSFREE: () => 0,
+//         "CORP100%": () => 0,
+//         EARLYBIRD: (basePrice) => Math.round(basePrice * 0.75),
+//         TEAM: (basePrice) => Math.round(basePrice * 0.5),
+//         OFFER199: () => 199   // ← ₹199 flat price
+//     },
+//     "smart-but-overlooked": {
+//         "ABHI100%": () => 1   // ← 100% off
+//     }
+// };
 
-// // export async function POST(req: NextRequest) {
-// //     try {
-// //         const decodedToken = await verifyUser(req);
-// //         const { itemId, itemType = "course", couponCode, userDetails } = await req.json();
+// // Events that are defined in code (not stored in Firestore "events" collection)
+// const HARDCODED_ITEMS: Record<string, { title: string; price: number }> = {
+//     "interview-to-offer-letter": {
+//         title: "Interview to Offer Letter",
+//         price: 499
+//     },
+//     "smart-but-overlooked": {
+//         title: "Smart But Overlooked: The Executive Presence Masterclass",
+//         price: 999 // ← keep in sync with the event page
+//     }
+// };
 
-// //         if (!itemId) return NextResponse.json({ error: "Item ID is required" }, { status: 400 });
+// function normalizeCouponCode(value: unknown): string {
+//     if (typeof value !== "string") return "";
+//     return value.trim().toUpperCase().split(/\s*-\s*/)[0].trim();
+// }
 
-// //         // 1. Fetch Item (Course or Event)
-// //         let itemData: any = null;
-// //         let price = 0;
-// //         const itemRef = db.collection(itemType === "course" ? "courses" : "events").doc(itemId);
+// export async function POST(req: NextRequest) {
+//     try {
+//         const decodedToken = await verifyUser(req);
+//         const { itemId, itemType = "course", couponCode, userDetails } = await req.json();
 
-// //         if (itemId === "interview-to-offer-letter") {
-// //             itemData = {
-// //                 title: "Interview to Offer Letter",
-// //                 price: 499
-// //             };
-// //             price = 499;
-// //         } else {
-// //             const itemDoc = await itemRef.get();
-// //             if (!itemDoc.exists) return NextResponse.json({ error: "Item not found" }, { status: 404 });
-// //             itemData = itemDoc.data()!;
-// //             price = itemData.price || 0;
-// //         }
+//         if (!itemId) return NextResponse.json({ error: "Item ID is required" }, { status: 400 });
 
-// //         // 2. General Interest Notification
-// //         try {
-// //             console.log(`[Checkout] Attempting to send interest notification for ${itemData.title}...`);
-// //             await MailService.sendAdminInterestNotification("ianutkarsh@gmail.com", userDetails, itemData.title);
-// //             console.log("[Checkout] Admin notification sent successfully.");
-// //         } catch (mailError: any) {
-// //             console.error("[Checkout] Failed to send admin notification:", mailError.message);
-// //         }
+//         // 1. Fetch Item (Course or Event)
+//         let itemData: any = null;
+//         let price = 0;
+//         const itemRef = db.collection(itemType === "course" ? "courses" : "events").doc(itemId);
+//         const hardcodedItem = HARDCODED_ITEMS[itemId];
 
-// //         // 3. Handle Discounts / Coupon Logic
-// //         const rawSubmittedCoupon = couponCode || userDetails?.couponCode;
-// //         const normalizedCoupon = normalizeCouponCode(rawSubmittedCoupon);
-// //         console.log("[Checkout] Coupon code received:", {
-// //             couponCode,
-// //             userDetailsCoupon: userDetails?.couponCode,
-// //             normalizedCoupon
-// //         });
+//         if (hardcodedItem) {
+//             itemData = { title: hardcodedItem.title, price: hardcodedItem.price };
+//             price = hardcodedItem.price;
+//         } else {
+//             const itemDoc = await itemRef.get();
+//             if (!itemDoc.exists) return NextResponse.json({ error: "Item not found" }, { status: 404 });
+//             itemData = itemDoc.data()!;
+//             price = itemData.price || 0;
+//         }
 
-// //         if (userDetails && normalizedCoupon) {
-// //             userDetails.couponCode = normalizedCoupon;
-// //         }
+//         // 2. General Interest Notification
+//         try {
+//             console.log(`[Checkout] Attempting to send interest notification for ${itemData.title}...`);
+//             await MailService.sendAdminInterestNotification("ianutkarsh@gmail.com", userDetails, itemData.title);
+//             console.log("[Checkout] Admin notification sent successfully.");
+//         } catch (mailError: any) {
+//             console.error("[Checkout] Failed to send admin notification:", mailError.message);
+//         }
 
-// //         const ruleForItem = COUPON_RULES[itemId]?.[normalizedCoupon];
-// //         if (normalizedCoupon) {
-// //             if (!ruleForItem) {
-// //                 return NextResponse.json(
-// //                     { error: "Invalid invite code. Check code and retry." },
-// //                     { status: 400 }
-// //                 );
-// //             }
-// //             price = ruleForItem(price);
-// //         }
+//         // 3. Handle Discounts / Coupon Logic
+//         const rawSubmittedCoupon = couponCode || userDetails?.couponCode;
+//         const normalizedCoupon = normalizeCouponCode(rawSubmittedCoupon);
+//         console.log("[Checkout] Coupon code received:", {
+//             couponCode,
+//             userDetailsCoupon: userDetails?.couponCode,
+//             normalizedCoupon
+//         });
 
-// //         // 4. Handle Free Enrollment
-// //         if (price === 0) {
-// //             const batch = db.batch();
-// //             const userRef = db.collection("users").doc(decodedToken.uid);
+//         if (userDetails && normalizedCoupon) {
+//             userDetails.couponCode = normalizedCoupon;
+//         }
 
-// //             if (itemType === "course") {
-// //                 batch.update(userRef, {
-// //                     enrolledCourses: admin.firestore.FieldValue.arrayUnion(itemId),
-// //                     ...(userDetails && { profileDetails: userDetails })
-// //                 });
-// //             } else {
-// //                 batch.update(userRef, {
-// //                     registeredEvents: admin.firestore.FieldValue.arrayUnion(itemId),
-// //                     ...(userDetails && { profileDetails: userDetails })
-// //                 });
-// //             }
+//         const ruleForItem = COUPON_RULES[itemId]?.[normalizedCoupon];
+//         if (normalizedCoupon) {
+//             if (!ruleForItem) {
+//                 return NextResponse.json(
+//                     { error: "Invalid invite code. Check code and retry." },
+//                     { status: 400 }
+//                 );
+//             }
+//             price = ruleForItem(price);
+//         }
 
-// //             if (itemId !== "interview-to-offer-letter") {
-// //                 batch.update(itemRef, {
-// //                     enrollmentCount: admin.firestore.FieldValue.increment(1)
-// //                 });
-// //             }
+//         // 4. Handle Free Enrollment
+//         if (price === 0) {
+//             const batch = db.batch();
+//             const userRef = db.collection("users").doc(decodedToken.uid);
 
-// //             const txRef = db.collection("transactions").doc();
-// //             batch.set(txRef, {
-// //                 userId: decodedToken.uid,
-// //                 itemId,
-// //                 itemType,
-// //                 paymentStatus: "success",
-// //                 paymentGateway: "free",
-// //                 amount: 0,
-// //                 userDetails: userDetails || {},
-// //                 createdAt: admin.firestore.FieldValue.serverTimestamp()
-// //             });
+//             if (itemType === "course") {
+//                 batch.update(userRef, {
+//                     enrolledCourses: admin.firestore.FieldValue.arrayUnion(itemId),
+//                     ...(userDetails && { profileDetails: userDetails })
+//                 });
+//             } else {
+//                 batch.update(userRef, {
+//                     registeredEvents: admin.firestore.FieldValue.arrayUnion(itemId),
+//                     ...(userDetails && { profileDetails: userDetails })
+//                 });
+//             }
 
-// //             await batch.commit();
+//             // Hardcoded events have no Firestore doc to update
+//             if (!hardcodedItem) {
+//                 batch.update(itemRef, {
+//                     enrollmentCount: admin.firestore.FieldValue.increment(1)
+//                 });
+//             }
 
-// //             // Send Booking Confirmation Email
-// //             try {
-// //                 const userDoc = await userRef.get();
-// //                 const userData = userDoc.data();
-// //                 const userEmail = userData?.email;
-// //                 const userName = userDetails?.name || userData?.name || userEmail?.split("@")[0] || "Student";
+//             const txRef = db.collection("transactions").doc();
+//             batch.set(txRef, {
+//                 userId: decodedToken.uid,
+//                 itemId,
+//                 itemType,
+//                 paymentStatus: "success",
+//                 paymentGateway: "free",
+//                 amount: 0,
+//                 couponCode: normalizedCoupon || null,
+//                 userDetails: userDetails || {},
+//                 createdAt: admin.firestore.FieldValue.serverTimestamp()
+//             });
 
-// //                 let freeItemData: any = null;
-// //                 if (itemId === "interview-to-offer-letter") {
-// //                     freeItemData = { title: "Interview to Offer Letter" };
-// //                 } else {
-// //                     const itemDoc = await itemRef.get();
-// //                     freeItemData = itemDoc.data();
-// //                 }
+//             await batch.commit();
 
-// //                 const itemTitle = freeItemData?.title || itemId;
+//             // Send Booking Confirmation Email
+//             try {
+//                 const userDoc = await userRef.get();
+//                 const userData = userDoc.data();
+//                 const userEmail = userData?.email;
+//                 const userName = userDetails?.name || userData?.name || userEmail?.split("@")[0] || "Student";
 
-// //                 if (userEmail) {
-// //                     console.log(`[Checkout Free] Sending booking confirmation email to ${userEmail}...`);
-// //                     await MailService.sendBookingConfirmation(userEmail, userName, itemTitle);
-// //                     console.log("[Checkout Free] Booking confirmation email sent successfully.");
-// //                 } else {
-// //                     console.warn("[Checkout Free] User email not found, skipping email notification.");
-// //                 }
-// //             } catch (emailError: any) {
-// //                 console.error("[Checkout Free] Error sending booking confirmation email:", emailError.message);
-// //             }
+//                 let freeItemData: any = null;
+//                 if (hardcodedItem) {
+//                     freeItemData = { title: hardcodedItem.title };
+//                 } else {
+//                     const itemDoc = await itemRef.get();
+//                     freeItemData = itemDoc.data();
+//                 }
 
-// //             return NextResponse.json({ success: true, type: "free" });
-// //         }
+//                 const itemTitle = freeItemData?.title || itemId;
 
-// //         // 5. Create Razorpay Order
-// //         console.log(`[Checkout] Creating Razorpay order for ${itemId} with price ₹${price}`);
-// //         const order = await razorpay.orders.create({
-// //             amount: price * 100,
-// //             currency: "INR",
-// //             receipt: `rcpt_${Date.now()}`,
-// //             notes: {
-// //                 userId: decodedToken.uid,
-// //                 itemId,
-// //                 itemType,
-// //                 userDetails: JSON.stringify(userDetails)
-// //             }
-// //         });
+//                 if (userEmail) {
+//                     console.log(`[Checkout Free] Sending booking confirmation email to ${userEmail}...`);
+//                     await MailService.sendBookingConfirmation(userEmail, userName, itemTitle);
+//                     console.log("[Checkout Free] Booking confirmation email sent successfully.");
+//                 } else {
+//                     console.warn("[Checkout Free] User email not found, skipping email notification.");
+//                 }
+//             } catch (emailError: any) {
+//                 console.error("[Checkout Free] Error sending booking confirmation email:", emailError.message);
+//             }
 
-// //         console.log(`[Checkout] Order created successfully with ID: ${order.id}`);
-// //         return NextResponse.json({
-// //             success: true,
-// //             type: "paid",
-// //             orderId: order.id,
-// //             amount: order.amount,
-// //             key: process.env.RAZORPAY_KEY_ID
-// //         });
+//             return NextResponse.json({ success: true, type: "free" });
+//         }
 
-// //     } catch (error: any) {
-// //         console.error("Checkout Error:", error);
-// //         return NextResponse.json({ error: error.message }, { status: 500 });
-// //     }
-// // }
+//         // 5. Create Razorpay Order
+//         console.log(`[Checkout] Creating Razorpay order for ${itemId} with price ₹${price}`);
+//         const order = await razorpay.orders.create({
+//             amount: price * 100,
+//             currency: "INR",
+//             receipt: `rcpt_${Date.now()}`,
+//             notes: {
+//                 userId: decodedToken.uid,
+//                 itemId,
+//                 itemType,
+//                 userDetails: JSON.stringify(userDetails)
+//             }
+//         });
 
+//         console.log(`[Checkout] Order created successfully with ID: ${order.id}`);
+//         return NextResponse.json({
+//             success: true,
+//             type: "paid",
+//             orderId: order.id,
+//             amount: order.amount,
+//             key: process.env.RAZORPAY_KEY_ID
+//         });
 
-
+//     } catch (error: any) {
+//         console.error("Checkout Error:", error);
+//         return NextResponse.json({ error: error.message }, { status: 500 });
+//     }
+// }
 
 
 
@@ -205,205 +219,399 @@ import { MailService } from "@/lib/mail";
 
 type CouponDiscountRule = (basePrice: number) => number;
 
-const COUPON_RULES: Record<string, Record<string, CouponDiscountRule>> = {
+const COUPON_RULES: Record<
+    string,
+    Record<string, CouponDiscountRule>
+> = {
     "speak-with-impact-bootcamp": {
         FAMILYFREE: () => 0,
         MENTORFREE: () => 0,
         "CORP100%": () => 0,
         EARLYBIRD: (basePrice) => Math.round(basePrice * 0.75),
-        TEAM: (basePrice) => Math.round(basePrice * 0.5)
+        TEAM: (basePrice) => Math.round(basePrice * 0.5),
     },
+
     "interview-to-offer-letter": {
         MASTERCLASSFREE: () => 0,
         "CORP100%": () => 0,
         EARLYBIRD: (basePrice) => Math.round(basePrice * 0.75),
         TEAM: (basePrice) => Math.round(basePrice * 0.5),
-        OFFER199: () => 199   // ← ₹199 flat price
+        OFFER199: () => 199,
     },
+
     "smart-but-overlooked": {
-        "ABHI100%": () => 0   // ← 100% off
-    }
+        // 100% discount
+        ABHI100: () => 0,
+        "ABHI100%": () => 0,
+    },
 };
 
-// Events that are defined in code (not stored in Firestore "events" collection)
-const HARDCODED_ITEMS: Record<string, { title: string; price: number }> = {
+// Events that are defined in code and do NOT require
+// a document inside the Firestore "events" collection.
+const HARDCODED_ITEMS: Record<
+    string,
+    {
+        title: string;
+        price: number;
+    }
+> = {
     "interview-to-offer-letter": {
         title: "Interview to Offer Letter",
-        price: 499
+        price: 499,
     },
+
     "smart-but-overlooked": {
         title: "Smart But Overlooked: The Executive Presence Masterclass",
-        price: 999 // ← keep in sync with the event page
-    }
+        price: 999,
+    },
 };
 
 function normalizeCouponCode(value: unknown): string {
     if (typeof value !== "string") return "";
-    return value.trim().toUpperCase().split(/\s*-\s*/)[0].trim();
+
+    return value
+        .trim()
+        .toUpperCase()
+        .split(/\s*-\s*/)[0]
+        .trim();
 }
 
 export async function POST(req: NextRequest) {
     try {
+        // ---------------------------------------------------------
+        // 1. VERIFY LOGGED-IN USER
+        // ---------------------------------------------------------
+
         const decodedToken = await verifyUser(req);
-        const { itemId, itemType = "course", couponCode, userDetails } = await req.json();
 
-        if (!itemId) return NextResponse.json({ error: "Item ID is required" }, { status: 400 });
+        const {
+            itemId,
+            itemType = "course",
+            couponCode,
+            userDetails,
+        } = await req.json();
 
-        // 1. Fetch Item (Course or Event)
+        if (!itemId) {
+            return NextResponse.json(
+                { error: "Item ID is required" },
+                { status: 400 }
+            );
+        }
+
+        // ---------------------------------------------------------
+        // 2. FIND ITEM + ORIGINAL PRICE
+        // ---------------------------------------------------------
+
         let itemData: any = null;
         let price = 0;
-        const itemRef = db.collection(itemType === "course" ? "courses" : "events").doc(itemId);
+
+        const itemRef = db
+            .collection(
+                itemType === "course" ? "courses" : "events"
+            )
+            .doc(itemId);
+
         const hardcodedItem = HARDCODED_ITEMS[itemId];
 
         if (hardcodedItem) {
-            itemData = { title: hardcodedItem.title, price: hardcodedItem.price };
+            // Hardcoded item
+            itemData = {
+                title: hardcodedItem.title,
+                price: hardcodedItem.price,
+            };
+
             price = hardcodedItem.price;
         } else {
+            // Firestore item
             const itemDoc = await itemRef.get();
-            if (!itemDoc.exists) return NextResponse.json({ error: "Item not found" }, { status: 404 });
+
+            if (!itemDoc.exists) {
+                return NextResponse.json(
+                    { error: "Item not found" },
+                    { status: 404 }
+                );
+            }
+
             itemData = itemDoc.data()!;
-            price = itemData.price || 0;
+
+            price = Number(itemData.price || 0);
         }
 
-        // 2. General Interest Notification
+        console.log("[Checkout] Item:", {
+            itemId,
+            itemType,
+            title: itemData.title,
+            originalPrice: price,
+            hardcoded: !!hardcodedItem,
+        });
+
+        // ---------------------------------------------------------
+        // 3. ADMIN INTEREST NOTIFICATION
+        // ---------------------------------------------------------
+
         try {
-            console.log(`[Checkout] Attempting to send interest notification for ${itemData.title}...`);
-            await MailService.sendAdminInterestNotification("ianutkarsh@gmail.com", userDetails, itemData.title);
-            console.log("[Checkout] Admin notification sent successfully.");
+            console.log(
+                `[Checkout] Attempting to send interest notification for ${itemData.title}...`
+            );
+
+            await MailService.sendAdminInterestNotification(
+                "ianutkarsh@gmail.com",
+                userDetails,
+                itemData.title
+            );
+
+            console.log(
+                "[Checkout] Admin notification sent successfully."
+            );
         } catch (mailError: any) {
-            console.error("[Checkout] Failed to send admin notification:", mailError.message);
+            console.error(
+                "[Checkout] Failed to send admin notification:",
+                mailError.message
+            );
+
+            // Do not stop checkout if notification email fails.
         }
 
-        // 3. Handle Discounts / Coupon Logic
-        const rawSubmittedCoupon = couponCode || userDetails?.couponCode;
-        const normalizedCoupon = normalizeCouponCode(rawSubmittedCoupon);
+        // ---------------------------------------------------------
+        // 4. COUPON PROCESSING
+        // ---------------------------------------------------------
+
+        const rawSubmittedCoupon =
+            couponCode || userDetails?.couponCode;
+
+        const normalizedCoupon =
+            normalizeCouponCode(rawSubmittedCoupon);
+
         console.log("[Checkout] Coupon code received:", {
             couponCode,
             userDetailsCoupon: userDetails?.couponCode,
-            normalizedCoupon
+            normalizedCoupon,
         });
 
         if (userDetails && normalizedCoupon) {
             userDetails.couponCode = normalizedCoupon;
         }
 
-        const ruleForItem = COUPON_RULES[itemId]?.[normalizedCoupon];
+        const ruleForItem =
+            COUPON_RULES[itemId]?.[normalizedCoupon];
+
         if (normalizedCoupon) {
             if (!ruleForItem) {
                 return NextResponse.json(
-                    { error: "Invalid invite code. Check code and retry." },
+                    {
+                        error:
+                            "Invalid invite code. Check code and retry.",
+                    },
                     { status: 400 }
                 );
             }
+
             price = ruleForItem(price);
         }
 
-        // 4. Handle Free Enrollment
+        // Never allow a negative amount.
+        price = Math.max(0, Math.round(price));
+
+        console.log("[Checkout] Final price:", {
+            itemId,
+            couponCode: normalizedCoupon || null,
+            finalPrice: price,
+        });
+
+        // ---------------------------------------------------------
+        // 5. FREE ENROLLMENT
+        // ---------------------------------------------------------
+
         if (price === 0) {
             const batch = db.batch();
-            const userRef = db.collection("users").doc(decodedToken.uid);
 
+            const userRef = db
+                .collection("users")
+                .doc(decodedToken.uid);
+
+            // Register user
             if (itemType === "course") {
                 batch.update(userRef, {
-                    enrolledCourses: admin.firestore.FieldValue.arrayUnion(itemId),
-                    ...(userDetails && { profileDetails: userDetails })
+                    enrolledCourses:
+                        admin.firestore.FieldValue.arrayUnion(itemId),
+
+                    ...(userDetails && {
+                        profileDetails: userDetails,
+                    }),
                 });
             } else {
                 batch.update(userRef, {
-                    registeredEvents: admin.firestore.FieldValue.arrayUnion(itemId),
-                    ...(userDetails && { profileDetails: userDetails })
+                    registeredEvents:
+                        admin.firestore.FieldValue.arrayUnion(itemId),
+
+                    ...(userDetails && {
+                        profileDetails: userDetails,
+                    }),
                 });
             }
 
-            // Hardcoded events have no Firestore doc to update
+            // Only update enrollmentCount when the item
+            // actually exists in Firestore.
             if (!hardcodedItem) {
                 batch.update(itemRef, {
-                    enrollmentCount: admin.firestore.FieldValue.increment(1)
+                    enrollmentCount:
+                        admin.firestore.FieldValue.increment(1),
                 });
             }
 
-            const txRef = db.collection("transactions").doc();
+            // Create free transaction
+            const txRef = db
+                .collection("transactions")
+                .doc();
+
             batch.set(txRef, {
                 userId: decodedToken.uid,
                 itemId,
                 itemType,
+
                 paymentStatus: "success",
                 paymentGateway: "free",
+
                 amount: 0,
-                couponCode: normalizedCoupon || null,
+
+                couponCode:
+                    normalizedCoupon || null,
+
                 userDetails: userDetails || {},
-                createdAt: admin.firestore.FieldValue.serverTimestamp()
+
+                createdAt:
+                    admin.firestore.FieldValue.serverTimestamp(),
             });
 
             await batch.commit();
 
-            // Send Booking Confirmation Email
+            console.log(
+                `[Checkout Free] Registration completed for ${itemId}`
+            );
+
+            // -----------------------------------------------------
+            // SEND CONFIRMATION EMAIL
+            // -----------------------------------------------------
+
             try {
                 const userDoc = await userRef.get();
                 const userData = userDoc.data();
+
                 const userEmail = userData?.email;
-                const userName = userDetails?.name || userData?.name || userEmail?.split("@")[0] || "Student";
+
+                const userName =
+                    userDetails?.name ||
+                    userDetails?.fullName ||
+                    userData?.name ||
+                    userEmail?.split("@")[0] ||
+                    "Student";
 
                 let freeItemData: any = null;
+
                 if (hardcodedItem) {
-                    freeItemData = { title: hardcodedItem.title };
+                    freeItemData = {
+                        title: hardcodedItem.title,
+                    };
                 } else {
                     const itemDoc = await itemRef.get();
                     freeItemData = itemDoc.data();
                 }
 
-                const itemTitle = freeItemData?.title || itemId;
+                const itemTitle =
+                    freeItemData?.title || itemId;
 
                 if (userEmail) {
-                    console.log(`[Checkout Free] Sending booking confirmation email to ${userEmail}...`);
-                    await MailService.sendBookingConfirmation(userEmail, userName, itemTitle);
-                    console.log("[Checkout Free] Booking confirmation email sent successfully.");
+                    console.log(
+                        `[Checkout Free] Sending booking confirmation email to ${userEmail}...`
+                    );
+
+                    await MailService.sendBookingConfirmation(
+                        userEmail,
+                        userName,
+                        itemTitle
+                    );
+
+                    console.log(
+                        "[Checkout Free] Booking confirmation email sent successfully."
+                    );
                 } else {
-                    console.warn("[Checkout Free] User email not found, skipping email notification.");
+                    console.warn(
+                        "[Checkout Free] User email not found, skipping email notification."
+                    );
                 }
             } catch (emailError: any) {
-                console.error("[Checkout Free] Error sending booking confirmation email:", emailError.message);
+                console.error(
+                    "[Checkout Free] Error sending booking confirmation email:",
+                    emailError.message
+                );
             }
 
-            return NextResponse.json({ success: true, type: "free" });
+            return NextResponse.json({
+                success: true,
+                type: "free",
+                amount: 0,
+            });
         }
 
-        // 5. Create Razorpay Order
-        console.log(`[Checkout] Creating Razorpay order for ${itemId} with price ₹${price}`);
+        // ---------------------------------------------------------
+        // 6. CREATE RAZORPAY ORDER
+        // ---------------------------------------------------------
+
+        console.log(
+            `[Checkout] Creating Razorpay order for ${itemId} with price ₹${price}`
+        );
+
         const order = await razorpay.orders.create({
             amount: price * 100,
             currency: "INR",
+
             receipt: `rcpt_${Date.now()}`,
+
             notes: {
                 userId: decodedToken.uid,
                 itemId,
                 itemType,
-                userDetails: JSON.stringify(userDetails)
-            }
+
+                userDetails: JSON.stringify(
+                    userDetails || {}
+                ),
+            },
         });
 
-        console.log(`[Checkout] Order created successfully with ID: ${order.id}`);
+        console.log(
+            `[Checkout] Order created successfully with ID: ${order.id}`
+        );
+
         return NextResponse.json({
             success: true,
             type: "paid",
-            orderId: order.id,
-            amount: order.amount,
-            key: process.env.RAZORPAY_KEY_ID
-        });
 
+            orderId: order.id,
+
+            amount: order.amount,
+
+            currency: "INR",
+
+            key: process.env.RAZORPAY_KEY_ID,
+        });
     } catch (error: any) {
-        console.error("Checkout Error:", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        console.error(
+            "[Checkout] Checkout Error:",
+            error
+        );
+
+        return NextResponse.json(
+            {
+                error:
+                    error?.message ||
+                    "Checkout failed",
+            },
+            {
+                status: 500,
+            }
+        );
     }
 }
-
-
-
-
-
-
-
-
 
 
 
